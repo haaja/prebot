@@ -22,11 +22,11 @@ Those scripts are located in www directory.
 ## DIRECTORIES
 
 ### src/
-    Irssi scripts implementing prebot functionality. Also file describing
-    database schema is here.
+Irssi scripts implementing prebot functionality. Also file describing 
+database schema is here.
 
 ### www/
-    Scripts used to create images out of files and display them over http.
+Scripts used to create images out of files and display them over http.
 
 ## DATABASE SCHEMA
 
