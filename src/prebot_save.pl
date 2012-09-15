@@ -824,11 +824,6 @@ sub saveSitepre {
             $error{'pre'} = $pre;
         }
 
-        if (($botId == 29 || $botId == 238) && $output{'echo'} && $addresult) {
-            my $message = "!addpre $pre $section";
-            echoPre($server, $message);
-        }
-
         $last{'pre'} = $pre;
         printDebug("saveSitepre()--[!sitepre $pre $section - -]--[$nick]",
                    "--[$channel]--DONE--");
@@ -857,20 +852,6 @@ sub saveSitepre {
                    "$pre $files $size]--[$nick]--[$channel]");
         return 0;
     }
-
-    # Special case with own sitebot
-#    if (($botId == 29 || $botId == 238) && $output{'echo'} && $addresult) {
-#
-#        echoSitepre($server, $text, $botId);
-#
-#        $text = "!addpre $pre $section";
-#        echoPre($server, $text);
-#
-#        if ($infoResult) {
-#            echoInfo($server, $pre, $files, $size);
-#            $last{'info'} = $pre;
-#        }
-#    }
 
     $last{'pre'} = $pre;
     printDebug("saveSitepre()--[!sitepre $pre $section $files $size]--[$nick]",
@@ -1220,10 +1201,6 @@ sub saveUnnuke {
                    "$pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
-
-#   if ($output{'echo'} && !$old) {
-#       echoNukes($server, $pre, $reason, $nukenet, "unnuke");
-#   }
 
     my $releaseId = getReleaseId($pre);
     my $channelId = getChannelId($channel);
@@ -2307,13 +2284,6 @@ sub saveUrl {
 
     my $releaseId = getReleaseId($pre);
     my $channelId = getChannelId($channel);
-
-#    # Special cases
-#    if ($output{'echo'} && (($channelId == 46 && $botId == 244) || 
-#       ($channelId == 58 && $botId == 273) || 
-#       ($channelId == 59 && $botId == 275))) {
-#        echoUrl($server, $pre, $url);
-#    }
 
     if (!checkIfAllowedUrl($url)) {
         printDebug("[ERROR] saveUrl()--[Url is not allowed]--[!addurl $pre ",
