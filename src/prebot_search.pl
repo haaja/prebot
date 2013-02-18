@@ -539,9 +539,9 @@ sub searchPre {
     $search =~ s/ /%/gi;
     $search =~ s/\*/%/gi;
 
-    my $sql = "SELECT r.releaseid FROM releases AS r LEFT JOIN sections AS s \
-        ON s.sectionid = r.sectionid LEFT JOIN groups AS g ON g.groupid = \
-        r.groupid";
+    my $sql = "SELECT r.releaseid FROM releases AS r \
+        LEFT JOIN sections AS s ON s.sectionid = r.sectionid \
+        LEFT JOIN groups AS g ON g.groupid = r.groupid";
     my @params;
     my $releaseId;
 
@@ -620,13 +620,15 @@ sub searchPre {
     }
 
     $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url FROM \
-        releases AS r LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
-        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
-        r.releaseid = i.releaseid LEFT JOIN nfos AS n ON r.releaseid = \
-        n.releaseid LEFT JOIN urls AS u ON r.releaseid = u.releaseid WHERE \
-        r.releaseid = ? LIMIT 1";
+        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url \
+        FROM releases AS r \
+        LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+        LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+        LEFT JOIN nfos AS n ON r.releaseid = n.releaseid \
+        LEFT JOIN urls AS u ON r.releaseid = u.releaseid \
+        WHERE r.releaseid = ? LIMIT 1";
     @params = ($releaseId);
 
     my @result = runSqlMulti($sql, @params);
@@ -814,12 +816,14 @@ sub searchDupe {
     }
 
     $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url FROM \
-        releases AS r LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT \
-        JOIN allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i \
-        ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
-        s.sectionid LEFT JOIN nfos AS n ON r.releaseid = n.releaseid LEFT \
-        JOIN urls AS u ON r.releaseid = u.releaseid WHERE $query $section \
+        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url \
+        FROM releases AS r LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+        LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+        LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN nfos AS n ON r.releaseid = n.releaseid \
+        LEFT JOIN urls AS u ON r.releaseid = u.releaseid \
+        WHERE $query $section \
         $group $not $sort $limit";
 
     my @result = runSqlMulti($sql, @params);
@@ -833,12 +837,14 @@ sub searchDupe {
         $query = "r.releasename LIKE ?";
         $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
             s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url \
-            FROM releases AS r LEFT JOIN genres AS g ON r.releaseid = \
-            g.releaseid LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
-            LEFT JOIN infos AS i ON r.releaseid = i.releaseid LEFT JOIN \
-            sections AS s ON r.sectionid = s.sectionid LEFT JOIN nfos AS n ON \
-            r.releaseid = n.releaseid LEFT JOIN urls AS u ON r.releaseid = \
-            u.releaseid WHERE $query $section $group $not $sort $limit";
+            FROM releases AS r \
+            LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+            LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+            LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+            LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid \
+            LEFT JOIN urls AS u ON r.releaseid = u.releaseid \
+            WHERE $query $section $group $not $sort $limit";
         @params = ("%$pre%");
 
         @result = runSqlMulti($sql, @params);
@@ -949,12 +955,14 @@ sub searchGetold {
     printDebug("searchGetold()--[!getold $pre]--[$nick]--[$channel]--START--");
 
     my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-        s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
-        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
-        r.releaseid = i.Releaseid LEFT JOIN sections AS s ON r.sectionid = \
-        s.sectionid LEFT JOIN groups AS gr ON r.groupid = gr.groupid WHERE \
-        r.releasename = ? LIMIT 0,1";
+        s.sectionname, a.genrename, i.files, i.size \
+        FROM releases AS r \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+        LEFT JOIN infos AS i ON r.releaseid = i.Releaseid \
+        LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
+        WHERE r.releasename = ? LIMIT 0,1";
     my @params = ($pre);
 
     my @Result = runSqlMulti($sql, @params);
@@ -1146,13 +1154,15 @@ sub searchPlay {
     }
 
     my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-        s.sectionname, a.genrename, i.files, i.size, n.nfoname, n.nfo FROM \
-        releases AS r LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos \
-        AS i ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON \
-        r.sectionid = s.sectionid LEFT JOIN groups AS gr ON r.groupid = \
-        gr.groupid LEFT JOIN nfos AS n ON n.releaseid = r.releaseid WHERE \
-        1 = ? $search ORDER BY r.pretime DESC LIMIT $limit";
+        s.sectionname, a.genrename, i.files, i.size, n.nfoname, n.nfo \
+        FROM releases AS r \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+        LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+        LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
+        LEFT JOIN nfos AS n ON n.releaseid = r.releaseid \
+        WHERE 1 = ? $search ORDER BY r.pretime DESC LIMIT $limit";
 
     my @result = runSqlMulti($sql, @params);
 
@@ -1305,9 +1315,10 @@ sub searchSpreadNfo {
         return 0;
     }
 
-    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo, r.pretime FROM nfos AS n \
-        LEFT JOIN releases AS r ON r.releaseid = n.releaseid WHERE \
-        r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo, r.pretime \
+            FROM nfos AS n \
+            LEFT JOIN releases AS r ON r.releaseid = n.releaseid \
+            WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my @result = runSqlMulti($sql, @params);
     my $releaseid = $result[0][0];
@@ -1353,8 +1364,9 @@ sub searchSpreadNfo {
 sub checkIfNfoExists {
     my $pre = shift;
 
-    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON \
-        r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid FROM nfos AS n \
+            LEFT JOIN releases AS r ON r.releaseid = n.releaseid \
+            WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my $id = runSqlSingle($sql, @params);
 
@@ -1371,8 +1383,9 @@ sub checkIfNfoExists {
 sub checkIfUrlExists {
     my $pre = shift;
 
-    my $sql = "SELECT u.releaseid FROM urls AS u LEFT JOIN releases as r ON \
-        r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT u.releaseid FROM urls AS u \
+            LEFT JOIN releases as r ON r.releaseid = u.releaseid \
+            WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
@@ -1392,8 +1405,9 @@ sub searchGroup {
     # remove _int at the end of group
     $group =~ s/_int$//i;
 
-    my $sql = "SELECT count(r.releaseid) FROM releases AS r INNER JOIN groups \
-        AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ? LIMIT 1";
+    my $sql = "SELECT count(r.releaseid) FROM releases AS r \
+            INNER JOIN groups AS gr ON r.groupid = gr.groupid \
+            WHERE gr.groupname = ? LIMIT 1";
     my @params = ($group);
     my $total = runSqlSingle($sql, @params);
     if (!$total) {
@@ -1408,14 +1422,16 @@ sub searchGroup {
     $sql = "SELECT groupname FROM groups WHERE groupname = ? LIMIT 1";
     my $groupname = runSqlSingle($sql, @params);
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups AS \
-        gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND r.status = ?";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r \
+            INNER JOIN groups AS gr ON r.groupid = gr.groupid \
+            WHERE gr.groupname = ? AND r.status = ?";
     @params = ($group, 2);
     my $nuked = runSqlSingle($sql, @params);
     my $nukedpercentage = sprintf("%.2f", ($nuked / $total * 100));
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups AS \
-        gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND r.status = ?";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r \
+            INNER JOIN groups AS gr ON r.groupid = gr.groupid \
+            WHERE gr.groupname = ? AND r.status = ?";
     @params = ($group, 3);
     my $unnuked = runSqlSingle($sql, @params);
     my $unnukedpercentage = sprintf("%.2f", ($unnuked / $total * 100));
@@ -1428,12 +1444,14 @@ sub searchGroup {
 
     # first release
     my $first = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-        s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
-        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
-        r.releaseid = i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
-        s.sectionid LEFT JOIN groups AS gr ON gr.groupid = r.groupid WHERE \
-        r.groupid = ? ORDER BY r.pretime ASC LIMIT 0,1";
+        s.sectionname, a.genrename, i.files, i.size \
+        FROM releases AS r \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+        LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+        LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN groups AS gr ON gr.groupid = r.groupid \
+        WHERE r.groupid = ? ORDER BY r.pretime ASC LIMIT 0,1";
     @params = ($groupid);
     my @first = runSqlMulti($first, @params);
 
@@ -1494,12 +1512,14 @@ sub searchGroup {
 
     # Last release
     my $last = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
-            s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
-            LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
-            allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i \
-            ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON \
-            r.sectionid = s.sectionid LEFT JOIN groups AS gr ON gr.groupid = \
-            r.groupid WHERE r.groupid = ? ORDER BY r.pretime DESC LIMIT 0,1";
+            s.sectionname, a.genrename, i.files, i.size \
+            FROM releases AS r \
+            LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+            LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+            LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+            LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+            LEFT JOIN groups AS gr ON gr.groupid = r.groupid \
+            WHERE r.groupid = ? ORDER BY r.pretime DESC LIMIT 0,1";
     @params = ($groupid);
 
     my @last = runSqlMulti($last, @params);
@@ -1559,9 +1579,10 @@ sub searchGroup {
 
     $last = $last.$linfo.$lgenre.$lstatus.$lpretime;
 
-    $sql = "SELECT s.sectionname, COUNT(r.releaseid) AS lasku FROM releases \
-        AS r, sections AS s WHERE r.groupid = ? AND r.sectionid = s.sectionid \
-        GROUP BY s.sectionname ORDER BY lasku desc LIMIT 3";
+    $sql = "SELECT s.sectionname, COUNT(r.releaseid) AS lasku \
+            FROM releases AS r, sections AS s \
+            WHERE r.groupid = ? AND r.sectionid = s.sectionid \
+            GROUP BY s.sectionname ORDER BY lasku desc LIMIT 3";
     @params = ($groupid);
 
     my @favsection = runSqlMulti($sql, @params);
@@ -1632,9 +1653,9 @@ sub searchStats {
     my $time = time();
     my $last24h = $time-(60*60*24);
 
-    my $sql = "SELECT COUNT(r.releaseid) FROM releases AS r LEFT JOIN \
-        channels AS c ON c.channelid = r.channelid WHERE c.channelname = ? \
-        AND r.pretime BETWEEN ? AND ? LIMIT 1";
+    my $sql = "SELECT COUNT(r.releaseid) FROM releases AS r \
+            LEFT JOIN channels AS c ON c.channelid = r.channelid \
+            WHERE c.channelname = ? AND r.pretime BETWEEN ? AND ? LIMIT 1";
     my @params = ($statsChan, $last24h, $time);
     my $channelpres = runSqlSingle($sql, @params);
 
@@ -1644,9 +1665,10 @@ sub searchStats {
     my $allpres = runSqlSingle($sql, @params);
 
     $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r \
-        LEFT JOIN bots AS b ON b.botid = r.botid LEFT JOIN channels AS c ON \
-        c.channelid = r.channelid WHERE c.channelname = ? AND r.pretime \
-        BETWEEN ? AND ? GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
+        LEFT JOIN bots AS b ON b.botid = r.botid \
+        LEFT JOIN channels AS c ON c.channelid = r.channelid \
+        WHERE c.channelname = ? AND r.pretime BETWEEN ? AND ? \
+        GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
 
     @params = ($statsChan, $last24h, $time);
     my @Result = runSqlMulti($sql, @params);
@@ -1693,8 +1715,9 @@ sub searchTop {
     my $allpres = runSqlSingle($sql);
 
     $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r \
-        LEFT JOIN bots AS b ON b.botid = r.botid WHERE r.pretime BETWEEN ? \
-        AND ? GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
+        LEFT JOIN bots AS b ON b.botid = r.botid \
+        WHERE r.pretime BETWEEN ? AND ? GROUP BY b.botname \
+        ORDER BY pres DESC LIMIT 5";
 
     my @Result = runSqlMulti($sql, @params);
     my $k = @Result;
@@ -1799,8 +1822,9 @@ sub searchFrom {
     printDebug("searchFrom()--[!from $pre]--[$nick]--[$channel]--START--");
 
     my $sql = "SELECT r.releaseid, r.status, c.channelname, c.networkname, \
-        b.botname FROM releases AS r LEFT JOIN channels AS c ON \
-        r.channelid = c.channelid LEFT JOIN bots AS b ON r.botid = b.botid \
+        b.botname FROM releases AS r \
+        LEFT JOIN channels AS c ON r.channelid = c.channelid \
+        LEFT JOIN bots AS b ON r.botid = b.botid \
         WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my @result = runSqlMulti($sql, @params);
@@ -1820,10 +1844,11 @@ sub searchFrom {
         return 0;
     }
     else {
-        $sql = "SELECT c.channelname, c.networkname, b.botname FROM delpred \
-            as d LEFT JOIN channels as c ON d.channelid = c.channelid \
-            LEFT JOIN bots as b ON d.botid = b.botid WHERE \
-            d.releasename = ? LIMIT 1";
+        $sql = "SELECT c.channelname, c.networkname, b.botname \
+            FROM delpred as d \
+            LEFT JOIN channels as c ON d.channelid = c.channelid \
+            LEFT JOIN bots as b ON d.botid = b.botid \
+            WHERE d.releasename = ? LIMIT 1";
         @result = runSqlMulti($sql, @params);
 
         if ($result[0][0]) {
@@ -1831,9 +1856,10 @@ sub searchFrom {
             my $deletechan = $result[0][0];
             my $deletenet = $result[0][1];
 
-            $sql = "SELECT c.channelname, c.networkname, b.botname FROM \
-                delpred as d LEFT JOIN channels as c ON d.origchannelid = \
-                c.channelid LEFT JOIN bots as b ON d.origbotid = b.botid \
+            $sql = "SELECT c.channelname, c.networkname, b.botname \
+                FROM delpred as d \
+                LEFT JOIN channels as c ON d.origchannelid = c.channelid \
+                LEFT JOIN bots as b ON d.origbotid = b.botid \
                 WHERE d.releasename = ? LIMIT 1";
             my @origresult = runSqlMulti($sql, @params);
 
@@ -1955,8 +1981,9 @@ sub getNfoChannel {
 
     my $channelright = 't|u'; # !getnfo ja !oldnfo
 
-        my $sql = "SELECT channelname FROM channels WHERE networkshort = ? \
-            AND (channelrights LIKE ? OR channelrights = 'a') LIMIT 1";
+        my $sql = "SELECT channelname FROM channels \
+            WHERE networkshort = ? AND (channelrights \
+            LIKE ? OR channelrights = 'a') LIMIT 1";
     my @params = ($networkShort, "%$channelright%");
 
     my $nfoChannel = runSqlSingle($sql, @params);

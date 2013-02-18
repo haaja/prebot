@@ -1021,9 +1021,9 @@ sub saveNuke {
         return 0;
     }
     elsif ($prestatus == 3) {
-        my $sql = "SELECT u.unnuketime FROM unnukes AS u LEFT JOIN releases \
-                AS r ON r.releaseid = u.releaseid WHERE r.releasename = ? \
-                ORDER BY u.unnuketime DESC LIMIT 1";
+        my $sql = "SELECT u.unnuketime FROM unnukes AS u \
+                LEFT JOIN releases AS r ON r.releaseid = u.releaseid \
+                WHERE r.releasename = ? ORDER BY u.unnuketime DESC LIMIT 1";
         my @params = ($pre);
 
         my $unnuketime = runSqlSingle($sql, @params);
@@ -1143,9 +1143,9 @@ sub saveUnnuke {
         return 0;
     }
     elsif ($prestatus == 2) {
-        my $sql = "SELECT n.nuketime FROM nukes AS n LEFT JOIN releases AS r \
-                ON r.releaseid = n.releaseid WHERE r.releasename = ? ORDER \
-                BY n.nuketime DESC LIMIT 1";
+        my $sql = "SELECT n.nuketime FROM nukes AS n \
+                LEFT JOIN releases AS r ON r.releaseid = n.releaseid \
+                WHERE r.releasename = ? ORDER BY n.nuketime DESC LIMIT 1";
         my @params = ($pre);
 
         my $nuketime = runSqlSingle($sql, @params);
@@ -1295,8 +1295,8 @@ sub saveModnuke {
         return 0;
     }
     elsif ($prestatus == 2) {
-        my $query = "SELECT nukeid, nukereason, nukenetid FROM nukes WHERE \
-                releaseid = ? ORDER BY nuketime DESC LIMIT 1";
+        my $query = "SELECT nukeid, nukereason, nukenetid FROM nukes \
+                WHERE releaseid = ? ORDER BY nuketime DESC LIMIT 1";
         @params = ($releaseid);
 
         my @old = runSqlMulti($query, @params);
@@ -1421,12 +1421,15 @@ sub saveOldDelpre {
 
     my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, \
             a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid, \
-            n.nfo, n.nfoname FROM releases AS r LEFT JOIN genres AS g ON \
-            r.releaseid = g.releaseid LEFT JOIN allowedgenres AS a ON \
-            g.genreid = a.genreid LEFT JOIN infos AS i ON r.releaseid = \
-            i.releaseid LEFT JOIN sections AS s ON r.sectionid = s.Sectionid \
-            LEFT JOIN groups AS gr ON r.groupid = gr.groupid LEFT JOIN nfos \
-            AS n ON r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+            n.nfo, n.nfoname \
+            FROM releases AS r \
+            LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+            LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+            LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+            LEFT JOIN sections AS s ON r.sectionid = s.Sectionid \
+            LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
+            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid \
+            WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     my @old = runSqlMulti($sql, @params);
@@ -1474,8 +1477,9 @@ sub saveOldDelpre {
         return 0;
     }
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases as r LEFT JOIN groups \
-        AS g ON g.groupid = r.groupid WHERE g.groupid = ? LIMIT 1";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases as r \
+            LEFT JOIN groups AS g ON g.groupid = r.groupid \
+            WHERE g.groupid = ? LIMIT 1";
     @params = ($groupid);
 
     if (!runSqlSingle($sql, @params)) {
@@ -1569,13 +1573,15 @@ sub saveDelpre {
 
     my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, \
             a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid, \
-            n.nfo, n.nfoname FROM releases AS r LEFT JOIN genres AS g ON \
-            r.releaseid = g.releaseid LEFT JOIN allowedgenres AS a ON \
-            g.genreid = a.genreid LEFT JOIN infos AS i ON r.releaseid = \
-            i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
-            s.Sectionid LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
-            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid WHERE \
-            r.releasename = ? LIMIT 1";
+            n.nfo, n.nfoname \
+            FROM releases AS r \
+            LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+            LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+            LEFT JOIN infos AS i ON r.releaseid = i.releaseid \
+            LEFT JOIN sections AS s ON r.sectionid = s.Sectionid \
+            LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
+            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid \
+            WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     my @old = runSqlMulti($sql, @params);
@@ -1623,8 +1629,9 @@ sub saveDelpre {
         return 0;
     }
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases as r LEFT JOIN groups AS \
-        g ON g.groupid = r.groupid WHERE g.groupid = ? LIMIT 1";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases as r \
+        LEFT JOIN groups AS g ON g.groupid = r.groupid \
+        WHERE g.groupid = ? LIMIT 1";
     @params = ($groupid);
 
     if (!runSqlSingle($sql, @params)) {
