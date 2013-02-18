@@ -1,4 +1,4 @@
-#######################################
+########################################
 ##  Prebot v3 - Save script
 ##  =======================================
 ##	This irssi scripts is a part of a larger script collection, which
@@ -67,7 +67,8 @@
 ##
 ##	Addoldchannels
 ##	==============
-##	    !addold <release> <section> <pretime> <files> <size> <genre> <nukereason>
+##	    !addold <release> <section> <pretime> <files> <size> <genre> 
+##                  <nukereason>
 ##	    !time
 ##	    !howmany <group>
 ##	    !convert <unixtime>
@@ -101,7 +102,7 @@
 ##	    !fix <rellu> <section>
 ##	    !spreadnfo <release>
 ##
-############################################################################################
+###############################################################################
 
 #use warnings;
 use strict;
@@ -466,8 +467,8 @@ sub savePre {
         return 0;
     }
 
-    printDebug("savePre()--[!addpre $pre $section]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("savePre()--[!addpre $pre $section]--[$nick]--[$channel]"
+        ."--START--");
 
     if (!checkPre($pre)) {
         if ($pre ne $error{'pre'}) {
@@ -486,8 +487,8 @@ sub savePre {
                           "--[Possibly something wrong with dirname $pre]",
                           "--[$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] savePre()--[Possibly something wrong with ",
-                       "dirname $pre]--[$nick]--[$channel]");
+            printDebug("[ERROR] savePre()--[Possibly something wrong with "
+                ."dirname $pre]--[$nick]--[$channel]");
         }
         $error{'pre'} = $pre;
         $noecho = 1;
@@ -506,8 +507,8 @@ sub savePre {
     if (!$section) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."savePre()--[",
                       "Unable to define section for $pre]--[$nick]--[$channel]";
-        printDebug("[ERROR] savePre()--[Unable to define section for $pre]--[",
-                   "$nick]--[$channel]");
+        printDebug("[ERROR] savePre()--[Unable to define section for $pre]"
+            ."--[$nick]--[$channel]");
         announceError($server, $message);
         return 0;
     }
@@ -530,8 +531,8 @@ sub savePre {
     my @params = ($pre, $pretime, $groupId, $sectionId, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
-        printDebug("[ERROR] savePre()--[Unable to save $pre into db]--[$nick]",
-                   "--[$channel]");
+        printDebug("[ERROR] savePre()--[Unable to save $pre into db]--[$nick]"
+            ."--[$channel]");
         $error{'pre'} = $pre;
         return 0;
     }
@@ -544,8 +545,8 @@ sub savePre {
 
     fetchDataFromNet($pre, $server);
 
-    printDebug("savePre()--[!addpre $pre $section]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("savePre()--[!addpre $pre $section]--[$nick]--[$channel]"
+        ."--DONE--");
     return 0;
 }
 
@@ -564,8 +565,8 @@ sub saveInfo {
     }
 
     if ($size =~ /\.$/) {
-        printDebug("[ERROR] saveInfo()--[Size ends with dot]--[!info $pre ",
-                   "$files $size]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveInfo()--[Size ends with dot]--[!info $pre "
+            ."$files $size]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -586,8 +587,8 @@ sub saveInfo {
         return 0;
     }
 
-    printDebug("saveInfo()--[!info $pre $files $size]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("saveInfo()--[!info $pre $files $size]--[$nick]--[$channel]"
+        ."--START--");
 
     my $botId = checkBot($nick, "info");
     if (!$botId) {
@@ -624,15 +625,15 @@ sub saveInfo {
     my @params = ($releaseId, $files, $size, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
-        printDebug("[ERROR] saveInfo()--[Unable to save infos to db]--[!info",
-                   " $pre $files $size]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveInfo()--[Unable to save infos to db]--[!info"
+            ." $pre $files $size]--[$nick]--[$channel]");
         $error{'info'} = $pre;
         return 0;
     }
 
     $last{'info'} = $pre;
-    printDebug("saveInfo()--[!info $pre $files $size]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("saveInfo()--[!info $pre $files $size]--[$nick]--[$channel]"
+        ."--DONE--");
     return 0;
 }
 
@@ -676,8 +677,8 @@ sub saveGinfo {
         return 0;
     }
 
-    printDebug("saveGinfo()--[!ginfo $pre $files $size]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("saveGinfo()--[!ginfo $pre $files $size]--[$nick]--[$channel]"
+        ."--START--");
 
     my $tmp = sprintf("%.1f", $size);
     if ($tmp == 0) {
@@ -712,15 +713,15 @@ sub saveGinfo {
                       "--[Unable to save ginfo to db]--[!ginfo $pre $files ",
                       "$size]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveGinfo()--[Unable to save ginfo to db]--[!ginfo $pre ",
-                   "$files $size]--[$nick]--[$channel]");
+        printDebug("saveGinfo()--[Unable to save ginfo to db]--[!ginfo $pre "
+            ."$files $size]--[$nick]--[$channel]");
         $error{'ginfo'} = $pre;
         return 0;
     }
 
     $last{'ginfo'} = $pre;
-    printDebug("saveGinfo()--[!ginfo $pre $files $size]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("saveGinfo()--[!ginfo $pre $files $size]--[$nick]--[$channel]"
+        ."--DONE--");
 }
 
 # Function to save sitepres
@@ -757,27 +758,27 @@ sub saveSitepre {
     my $channelId = getChannelId($channel);
 
     if ($size) {
-        printDebug("saveSitepre()--[!sitepre $pre $section $files $size]",
-                   "--[$nick]--[$channel]--START--");
+        printDebug("saveSitepre()--[!sitepre $pre $section $files $size]--["
+            ."$nick]--[$channel]--START--");
     }
     else {
-        printDebug("saveSitepre()--[!sitepre $pre $section - -]--[$nick]",
-                   "--[$channel]--START--");
+        printDebug("saveSitepre()--[!sitepre $pre $section - -]--[$nick]--["
+            ."$channel]--START--");
     }
 
     my $temp = $section;
     $section = checkSection($pre, $section);
     if (!$section) {
-        printDebug("[ERROR] saveSitepre()--[Unable to define section]--[",
-                   "!sitepre $pre $temp $files $size]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveSitepre()--[Unable to define section]--["
+            ."!sitepre $pre $temp $files $size]--[$nick]--[$channel]");
         return 0;
     }
 
     my $sectionId = getSectionId($section);
     my $groupId = getGroupId($pre);
     if (!$groupId) {
-        printDebug("[ERROR] saveSitepre()--[Unable to get group from $pre]",
-                   "--[$nick]--[$channel]");
+        printDebug("[ERROR] saveSitepre()--[Unable to get group from $pre]"
+            ."--[$nick]--[$channel]");
         return 0;
     }
 
@@ -796,8 +797,8 @@ sub saveSitepre {
                       "--[Unable to save sitepre]--[!sitepre $pre $files ",
                       "$size]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveSitepre()--[Unable to save sitepre]--[",
-                   "!sitepre $pre $files $size]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveSitepre()--[Unable to save sitepre]--["
+            ."!sitepre $pre $files $size]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -806,8 +807,8 @@ sub saveSitepre {
 
     my $releaseId = getReleaseId($pre);
     if (!$releaseId) {
-        printDebug("[ERROR] saveSitepre()--[Unable to get releaseid]--[$pre]",
-                   "--[$nick]--[$channel]");
+        printDebug("[ERROR] saveSitepre()--[Unable to get releaseid]--[$pre]"
+            ."--[$nick]--[$channel]");
         return 0;
     }
 
@@ -825,8 +826,8 @@ sub saveSitepre {
         }
 
         $last{'pre'} = $pre;
-        printDebug("saveSitepre()--[!sitepre $pre $section - -]--[$nick]",
-                   "--[$channel]--DONE--");
+        printDebug("saveSitepre()--[!sitepre $pre $section - -]--[$nick]--["
+            ."$channel]--DONE--");
 
         return 0;
     }
@@ -848,14 +849,14 @@ sub saveSitepre {
                       "saveSitepre()--[Unable to save infos]--[!sitepre $pre",
                       "$files $size]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR]: saveSitepre()--[Unable to save infos]--[!info ",
-                   "$pre $files $size]--[$nick]--[$channel]");
+        printDebug("[ERROR]: saveSitepre()--[Unable to save infos]--[!info "
+            ."$pre $files $size]--[$nick]--[$channel]");
         return 0;
     }
 
     $last{'pre'} = $pre;
-    printDebug("saveSitepre()--[!sitepre $pre $section $files $size]--[$nick]",
-               "--[$channel]--DONE--");
+    printDebug("saveSitepre()--[!sitepre $pre $section $files $size]--"
+        ."[$nick]--[$channel]--DONE--");
 
     return 0;
 }
@@ -882,8 +883,8 @@ sub saveGenre {
                           "--[No such pre in db]--[!gn $pre $genre]--[$nick]",
                           "--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveGenre()--[No such pre in db]--[!gn $pre ",
-                       "$genre]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveGenre()--[No such pre in db]--[!gn $pre "
+                ."$genre]--[$nick]--[$channel]");
         }
         $error{'gn'} = $genre;
         return 0;
@@ -929,8 +930,8 @@ sub saveGenre {
                           "--[Invalid genre]--[!gn $pre $genre]--[$nick]",
                           "--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveGenre()--[Invalid genre]--[!gn $pre ",
-                       "$genre]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveGenre()--[Invalid genre]--[!gn $pre "
+                ."$genre]--[$nick]--[$channel]");
             $error{'gn'} = $genre;
 
             return 0;
@@ -942,8 +943,8 @@ sub saveGenre {
                               "saveGenre()--[Invalid genre]--[!gn $pre $genre",
                               "]--[$nick]--[$channel]";
                 announceError($server, $message);
-                printDebug("[ERROR] saveGenre()--[Invalid genre]--[!gn $pre ",
-                           "$genre]--[$nick]--[$channel]");
+                printDebug("[ERROR] saveGenre()--[Invalid genre]--[!gn $pre "
+                    ."$genre]--[$nick]--[$channel]");
             }
             $error{'gn'} = $genre;
 
@@ -986,8 +987,8 @@ sub saveGenre {
                       "Unable to save genre]--[!gn $pre $genre]--[$nick]",
                       "--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveGenre()--[Unable to save genre]--[!gn $pre ",
-                   "$genre]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveGenre()--[Unable to save genre]--[!gn $pre "
+            ."$genre]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1020,9 +1021,9 @@ sub saveNuke {
         return 0;
     }
     elsif ($prestatus == 3) {
-        my $sql = "SELECT u.unnuketime FROM unnukes AS u LEFT JOIN releases ",
-                  "AS r ON r.releaseid = u.releaseid WHERE r.releasename = ? ",
-                  "ORDER BY u.unnuketime DESC LIMIT 1";
+        my $sql = "SELECT u.unnuketime FROM unnukes AS u LEFT JOIN releases \
+                AS r ON r.releaseid = u.releaseid WHERE r.releasename = ? \
+                ORDER BY u.unnuketime DESC LIMIT 1";
         my @params = ($pre);
 
         my $unnuketime = runSqlSingle($sql, @params);
@@ -1039,8 +1040,8 @@ sub saveNuke {
                           "--[Invalid characters in nukereason]--[!nuke $pre ",
                           "$reason $nukenet]--[$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveNuke()--[Invalid characters in nukereason]",
-                       "--[!nuke $pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveNuke()--[Invalid characters in nukereason"
+                ."]--[!nuke $pre $reason $nukenet]--[$nick]--[$channel]");
         }
         $error{'nuke'} = $pre;
         return 0;
@@ -1052,8 +1053,8 @@ sub saveNuke {
                           "--[No such pre in db]--[!nuke $pre $reason ",
                           "$nukenet]--[$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveNuke()--[No such pre in db]--[!nuke $pre ",
-                       "$reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveNuke()--[No such pre in db]--[!nuke $pre "
+                ."$reason $nukenet]--[$nick]--[$channel]");
         }
         $error{'nuke'} = $pre;
         return 0;
@@ -1069,8 +1070,8 @@ sub saveNuke {
         return 0;
     }
 
-    printDebug("saveNuke()--[!nuke $pre $reason $nukenet]--[$nick]",
-               "--[$channel]--START--");
+    printDebug("saveNuke()--[!nuke $pre $reason $nukenet]--[$nick]--["
+        ."$channel]--START--");
 
 #   if ($output{'echo'} && !$old) {
 #       echoNukes($server, $pre, $reason, $nukenet, "nuke");
@@ -1078,8 +1079,8 @@ sub saveNuke {
 
     my $channelid = getChannelId($channel);
     if (!$channelid) {
-        printDebug("[ERROR] saveNuke()--[Unable to get channelid for ",
-                   "$channel]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveNuke()--[Unable to get channelid for "
+            ."$channel]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1095,8 +1096,8 @@ sub saveNuke {
                       "--[Unable to save nuke]--[!nuke $pre $reason $nukenet]",
                       "--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveNuke()--[Unable to save nuke]--[!nuke $pre ",
-                   "$reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveNuke()--[Unable to save nuke]--[!nuke $pre "
+            ."$reason $nukenet]--[$nick]--[$channel]");
     }
 
     $sql = "UPDATE releases SET status = ? WHERE releaseid = ? LIMIT 1";
@@ -1107,8 +1108,8 @@ sub saveNuke {
     announceNuke($server, $message);
 
     $last{'nuke'} = $pre;
-    printDebug("saveNuke()--[!nuke $pre $reason $nukenet]--[$nick]",
-               "--[$channel]--DONE--");
+    printDebug("saveNuke()--[!nuke $pre $reason $nukenet]--[$nick]--[$channel"
+        ."]--DONE--");
 
     return 0;
 }
@@ -1136,15 +1137,15 @@ sub saveUnnuke {
                       "--[Release is already unnuked]--[!unnuke $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveUnnuke()--[Release is already unnuked]--[",
-                   "!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUnnuke()--[Release is already unnuked]--["
+            ."!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         $error{'unnuke'} = $pre;
         return 0;
     }
     elsif ($prestatus == 2) {
-        my $sql = "SELECT n.nuketime FROM nukes AS n LEFT JOIN releases AS r ",
-                  "ON r.releaseid = n.releaseid WHERE r.releasename = ? ORDER ",
-                  "BY n.nuketime DESC LIMIT 1";
+        my $sql = "SELECT n.nuketime FROM nukes AS n LEFT JOIN releases AS r \
+                ON r.releaseid = n.releaseid WHERE r.releasename = ? ORDER \
+                BY n.nuketime DESC LIMIT 1";
         my @params = ($pre);
 
         my $nuketime = runSqlSingle($sql, @params);
@@ -1161,8 +1162,8 @@ sub saveUnnuke {
                           "saveUnnuke()--[Invalid characters in reason]--[",
                           "!unnuke $pre $reason $nukenet]--[$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveUnnuke()--[Invalid characters in reason]-",
-                       "-[!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveUnnuke()--[Invalid characters in reason]"
+                ."--[!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         }
         $error{'unnuke'} = $pre;
         return 0;
@@ -1180,15 +1181,15 @@ sub saveUnnuke {
                           "saveUnnuke()--[No such pre in db]--[!unnuke $pre ",
                           "$reason $nukenet]--[$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveUnnuke()--[No such pre in db]--[!unnuke ",
-                       "$pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveUnnuke()--[No such pre in db]--[!unnuke "
+                ."$pre $reason $nukenet]--[$nick]--[$channel]");
         }
         $error{'unnuke'} = $pre;
         return 0;
     }
 
-    printDebug("saveUnnuke()--[!unnuke $pre $reason $nukenet]--[$nick]--[",
-               "$channel]--START--");
+    printDebug("saveUnnuke()--[!unnuke $pre $reason $nukenet]--[$nick]--["
+        ."$channel]--START--");
 
     my $nukenetId = checkNukenet($nukenet, "nuke");
 
@@ -1197,16 +1198,16 @@ sub saveUnnuke {
                       "saveUnnuke()--[Nukenet not allowed]--[!unnuke $pre ",
                       "$reason $nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveUnnuke()--[Nukenet not allowed]--[!unnuke ",
-                   "$pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUnnuke()--[Nukenet not allowed]--[!unnuke "
+            ."$pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
     my $releaseId = getReleaseId($pre);
     my $channelId = getChannelId($channel);
     if (!$channelId) {
-        printDebug("[ERROR]: saveUnnuke()--[Unable to get channelid for ",
-                   "$channel]--[$nick]--[$channel]");
+        printDebug("[ERROR]: saveUnnuke()--[Unable to get channelid for "
+            ."$channel]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1216,8 +1217,8 @@ sub saveUnnuke {
                   $botId);
 
     if(!runSqlSave($sql, @params)) {
-        printDebug("[ERROR] saveUnnuke()--[Unable to save unnuke into db]--[",
-                   "!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUnnuke()--[Unable to save unnuke into db]--["
+            ."!unnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         $error{'unnuke'} = $pre;
         return 0;
     }
@@ -1230,8 +1231,8 @@ sub saveUnnuke {
     announceUnnuke($server, $message);
 
     $last{'unnuke'} = $pre;
-    printDebug("saveUnnuke()--[!unnuke $pre $reason $nukenet]--[$nick]--[",
-               "$channel]--DONE--");
+    printDebug("saveUnnuke()--[!unnuke $pre $reason $nukenet]--[$nick]--["
+        ."$channel]--DONE--");
 
     return 0;
 }
@@ -1255,8 +1256,8 @@ sub saveModnuke {
                       "--[No such pre in db]--[!modnuke $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveModnuke()--[No such pre in db]--[!modnuke ",
-                   "$pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveModnuke()--[No such pre in db]--[!modnuke "
+            ."$pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1273,8 +1274,8 @@ sub saveModnuke {
                       "--[Nukenet is not allowed]--[!modnuke $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveModnuke()--[Nukenet is not allowed]--[",
-                   "!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveModnuke()--[Nukenet is not allowed]--["
+            ."!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1289,40 +1290,40 @@ sub saveModnuke {
                       "--[Release is not (un)nuked]--[!modnuke $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveModnuke()--[Release is not (un)nuked]--[",
-                   "!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveModnuke()--[Release is not (un)nuked]--["
+            ."!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
     elsif ($prestatus == 2) {
-        my $query = "SELECT nukeid, nukereason, nukenetid FROM nukes WHERE ",
-                    "releaseid = ? ORDER BY nuketime DESC LIMIT 1";
+        my $query = "SELECT nukeid, nukereason, nukenetid FROM nukes WHERE \
+                releaseid = ? ORDER BY nuketime DESC LIMIT 1";
         @params = ($releaseid);
 
         my @old = runSqlMulti($query, @params);
 
         if ($old[0][1] eq $reason && $old[0][2] eq $nukenetid) {
-            printDebug("[ERROR] saveModnuke()-[modnuke changes nothing]--[",
-                       "!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveModnuke()-[modnuke changes nothing]--["
+                ."!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
             return 0;
         }
 
         my $nukeid = $old[0][0];
 
-        $update= "UPDATE nukes SET nukereason = ?, nukenetid = ?, nuketime = ?",
-                 ", channelid = ?, botid = ? WHERE nukeid = ? LIMIT 1";
+        $update= "UPDATE nukes SET nukereason = ?, nukenetid = ?, nuketime \
+                = ?, channelid = ?, botid = ? WHERE nukeid = ? LIMIT 1";
         @params = ($reason, $nukenetid, $modnuketime, $channelid, $botid, 
                    $nukeid);
     }
     elsif ($prestatus == 3) {
-        my $query = "SELECT unnukeid, unnukereason, nukenetid FROM unnukes ",
-                    "WHERE releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
+        my $query = "SELECT unnukeid, unnukereason, nukenetid FROM unnukes \
+                WHERE releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
         @params = ($releaseid);
 
         my @old = runSqlMulti($query, @params);
 
         if ($old[0][1] eq $reason && $old[0][2] eq $nukenetid) {
-            printDebug("[ERROR] saveModnuke()-[modnuke changes nothing]--[",
-                       "!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveModnuke()-[modnuke changes nothing]--["
+                ."!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
             return 0;
         }
 
@@ -1339,8 +1340,8 @@ sub saveModnuke {
                       "--[Release is delpred]--[!modnuke $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveModnuke()--[Release is delpred]--[!modnuke ",
-                   "$pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveModnuke()--[Release is delpred]--[!modnuke "
+            ."$pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
     else {
@@ -1348,26 +1349,25 @@ sub saveModnuke {
                       "--[Invalid status for a release in db]--[!modnuke ",
                       "$pre $reason $nukenet]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveModnuke()--[Invalid status for a release in ",
-                   "db]--[!modnuke $pre $reason $nukenet]--[$nick]--[",
-                   "$channel]");
+        printDebug("[ERROR] saveModnuke()--[Invalid status for a release in "
+            ."db]--[!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
-    printDebug("saveModnuke()--[!modnuke $pre $reason $nukenet]--[$nick]--[",
-               "$channel]--START--");
+    printDebug("saveModnuke()--[!modnuke $pre $reason $nukenet]--[$nick]--["
+        ."$channel]--START--");
 
     if (!runSqlSave($update, @params)) {
-        printDebug("[ERROR] saveModnuke()--[Unable to save modnuke]--[",
-                   "!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveModnuke()--[Unable to save modnuke]--["
+            ."!modnuke $pre $reason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
     my $message = "$pre $reason $nukenet";
     announceModnuke($server, $message);
     $last{'modnuke'} = $pre;
-    printDebug("saveModnuke()--[!modnuke $pre $reason $nukenet]--[$nick]",
-               "--[$channel]--DONE--");
+    printDebug("saveModnuke()--[!modnuke $pre $reason $nukenet]--[$nick]"
+        ."--[$channel]--DONE--");
 
     return 0;
 }
@@ -1411,24 +1411,22 @@ sub saveOldDelpre {
         return 0;
     }
 
-    printDebug("saveOldDelpre()--[!delpre $pre $deletereason $nukenet]--[",
-               "$nick]--[$channel]--START--");
+    printDebug("saveOldDelpre()--[!delpre $pre $deletereason $nukenet]--["
+        ."$nick]--[$channel]--START--");
 
     my $channelid = getChannelId($channel);
     if (!$channelid) {
         return 0;
     }
 
-    my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, ",
-              "a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid",
-              ", n.nfo, n.nfoname FROM releases AS r ",
-              "LEFT JOIN genres AS g ON r.releaseid = g.releaseid ",
-              "LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid ",
-              "LEFT JOIN infos AS i ON r.releaseid = i.releaseid ",
-              "LEFT JOIN sections AS s ON r.sectionid = s.Sectionid ",
-              "LEFT JOIN groups AS gr ON r.groupid = gr.groupid ",
-              "LEFT JOIN nfos AS n ON r.releaseid = n.releaseid ",
-              "WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, \
+            a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid, \
+            n.nfo, n.nfoname FROM releases AS r LEFT JOIN genres AS g ON \
+            r.releaseid = g.releaseid LEFT JOIN allowedgenres AS a ON \
+            g.genreid = a.genreid LEFT JOIN infos AS i ON r.releaseid = \
+            i.releaseid LEFT JOIN sections AS s ON r.sectionid = s.Sectionid \
+            LEFT JOIN groups AS gr ON r.groupid = gr.groupid LEFT JOIN nfos \
+            AS n ON r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     my @old = runSqlMulti($sql, @params);
@@ -1471,14 +1469,13 @@ sub saveOldDelpre {
     my $result = runSqlSave($sql, @params);
 
     if (!$result) {
-        printDebug("[ERROR] saveDelpre()--[Unable to save delpre]--[!delpre ",
-                   "$pre $deletereason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveDelpre()--[Unable to save delpre]--[!delpre "
+            ."$pre $deletereason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases as r ",
-           "LEFT JOIN groups AS g ON g.groupid = r.groupid ",
-           "WHERE g.groupid = ? LIMIT 1";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases as r LEFT JOIN groups \
+        AS g ON g.groupid = r.groupid WHERE g.groupid = ? LIMIT 1";
     @params = ($groupid);
 
     if (!runSqlSingle($sql, @params)) {
@@ -1517,8 +1514,8 @@ sub saveOldDelpre {
     }
 
     $last{'delpre'} = $pre;
-    printDebug("saveOldDelpre()--[!olddelpre $pre $delpretime $deletereason ",
-               "$nukenet]--[$nick]--[$channel]--DONE--");
+    printDebug("saveOldDelpre()--[!olddelpre $pre $delpretime $deletereason "
+        ."$nukenet]--[$nick]--[$channel]--DONE--");
     return 0;
 }
 
@@ -1562,24 +1559,23 @@ sub saveDelpre {
         return 0;
     }
 
-    printDebug("saveDelpre()--[!delpre $pre $deletereason $nukenet]--[$nick]",
-               "--[$channel]--START--");
+    printDebug("saveDelpre()--[!delpre $pre $deletereason $nukenet]--[$nick]"
+        ."--[$channel]--START--");
 
     my $channelid = getChannelId($channel);
     if (!$channelid) {
         return 0;
     }
 
-    my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, ",
-              "a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid,",
-              " n.nfo, n.nfoname FROM releases AS r ",
-              "LEFT JOIN genres AS g ON r.releaseid = g.releaseid ",
-              "LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid ",
-              "LEFT JOIN infos AS i ON r.releaseid = i.releaseid ",
-              "LEFT JOIN sections AS s ON r.sectionid = s.Sectionid ",
-              "LEFT JOIN groups AS gr ON r.groupid = gr.groupid ",
-              "LEFT JOIN nfos AS n ON r.releaseid = n.releaseid ",
-              "WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT r.releaseid, r.pretime, r.status, s.sectionname, \
+            a.genrename, i.files, i.size, gr.groupid, r.channelid, r.botid, \
+            n.nfo, n.nfoname FROM releases AS r LEFT JOIN genres AS g ON \
+            r.releaseid = g.releaseid LEFT JOIN allowedgenres AS a ON \
+            g.genreid = a.genreid LEFT JOIN infos AS i ON r.releaseid = \
+            i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
+            s.Sectionid LEFT JOIN groups AS gr ON r.groupid = gr.groupid \
+            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid WHERE \
+            r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     my @old = runSqlMulti($sql, @params);
@@ -1622,14 +1618,13 @@ sub saveDelpre {
     my $result = runSqlSave($sql, @params);
 
     if (!$result) {
-        printDebug("[ERROR] saveDelpre()--[Unable to save delpre]--[!delpre ",
-                   "$pre $deletereason $nukenet]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveDelpre()--[Unable to save delpre]--[!delpre "
+            ."$pre $deletereason $nukenet]--[$nick]--[$channel]");
         return 0;
     }
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases as r ",
-           "LEFT JOIN groups AS g ON g.groupid = r.groupid ",
-           "WHERE g.groupid = ? LIMIT 1";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases as r LEFT JOIN groups AS \
+        g ON g.groupid = r.groupid WHERE g.groupid = ? LIMIT 1";
     @params = ($groupid);
 
     if (!runSqlSingle($sql, @params)) {
@@ -1672,8 +1667,8 @@ sub saveDelpre {
 #   }
 
     $last{'delpre'} = $pre;
-    printDebug("saveDelpre()--[!delpre $pre $deletereason $nukenet]--[$nick]",
-               "--[$channel]--DONE--");
+    printDebug("saveDelpre()--[!delpre $pre $deletereason $nukenet]--[$nick]"
+        ."--[$channel]--DONE--");
     return 0;
 }
 
@@ -1718,9 +1713,8 @@ sub saveUndelpre {
 
     my $delpreid =  runSqlSingle($sql, @params);
 
-    $sql = "SELECT releasename, section, pretime, files, size, genre, ",
-           "nukereason, nfo, nfoname FROM delpred WHERE delpreid = ? ",
-           "LIMIT 0, 1";
+    $sql = "SELECT releasename, section, pretime, files, size, genre, \
+        nukereason, nfo, nfoname FROM delpred WHERE delpreid = ? LIMIT 0, 1";
     @params = ($delpreid);
 
     my @release = runSqlMulti($sql, @params);
@@ -1768,17 +1762,13 @@ sub saveUndelpre {
                       "--[Unable to resave nfo]--[!undelpre $pre $reason ",
                       "$nukenet]--[$nick]--[$channel]";
             announceError($server, $msg);
-            printDebug("saveUndelpre()--[Unable to resave nfo]--[!undelpre ",
-                       "$pre $reason $nukenet]--[$nick]--[$channel]");
+            printDebug("saveUndelpre()--[Unable to resave nfo]--[!undelpre "
+                ."$pre $reason $nukenet]--[$nick]--[$channel]");
         }
     }
 
-#   if (!$noecho) {
-#	echoDelpre($server, $pre, $reason, $nukenet, "undelpre");
-#   }
-
-    printDebug("saveUndelpre()--[!undelpre $pre $reason $nukenet]--[$nick]",
-               "--[$channel]--DONE--");
+    printDebug("saveUndelpre()--[!undelpre $pre $reason $nukenet]--[$nick]"
+        ."--[$channel]--DONE--");
     return 0;
 }
 
@@ -1804,9 +1794,9 @@ sub saveAddold {
     my $result = 0;
 
     if ($currenttime < $pretime) {
-        printDebug("[ERROR] saveAddold--[Pretime in future]--[!addold $pre ",
-                   "$origSection $pretime $files $size $genre $nuke]--[$nick]",
-                   "--[$channel]");
+        printDebug("[ERROR] saveAddold--[Pretime in future]--[!addold $pre "
+            ."$origSection $pretime $files $size $genre $nuke]--[$nick]"
+            ."--[$channel]");
         return 0;
     }
 
@@ -1836,8 +1826,8 @@ sub saveAddold {
     my $exists = checkIfPreExists($pre);
     if ($exists == 1) {
         if ($nick eq "ZickZack") {
-            my $sql = "SELECT pretime FROM releases WHERE releasename = ? ",
-                      "LIMIT 1";
+            my $sql = "SELECT pretime FROM releases WHERE releasename = ? \
+                    LIMIT 1";
             my @params = ($pre);
 
             my $time = runSqlSingle($sql, @params);
@@ -1882,9 +1872,9 @@ sub saveAddold {
                       "Invalid section]--[!addold $pre $origSection $pretime ",
                       "$files $size $genre $nuke]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveAddold()--[Invalid section]--[!addold $pre ",
-                   "$origSection $pretime $files $size $genre $nuke]--[$nick]",
-                   "--[$channel]");
+        printDebug("saveAddold()--[Invalid section]--[!addold $pre "
+            ."$origSection $pretime $files $size $genre $nuke]--[$nick]"
+            ."--[$channel]");
         return 0;
     }
 
@@ -1894,8 +1884,8 @@ sub saveAddold {
     if (length($nuke) == 1) { $nuke =~ s/\-//g; }
 
 
-    printDebug("saveAddold()--[!addold $pre $section $pretime $files $size ",
-               "$genre $nuke]--[$nick]--[$channel]--START--");
+    printDebug("saveAddold()--[!addold $pre $section $pretime $files $size "
+        ."$genre $nuke]--[$nick]--[$channel]--START--");
 
     my $sectionId = getSectionId($section);
     my $releaseId = getReleaseId($pre);
@@ -1918,9 +1908,9 @@ sub saveAddold {
                       "$origSection $pretime $files $size $genre $nuke]",
                       "--[$nick]";
         announceError($server, $message);
-        printDebug("saveAddold()--[Unable to save addold into db]--[!addold ",
-                   "$pre $origSection $pretime $files $size $genre $nuke]",
-                   "--[$nick]--[$channel]");
+        printDebug("saveAddold()--[Unable to save addold into db]--[!addold "
+            ."$pre $origSection $pretime $files $size $genre $nuke]"
+            ."--[$nick]--[$channel]");
 
         return 0;
     }
@@ -1946,8 +1936,8 @@ sub saveAddold {
     announceAddold($server, "$pre $section");
 
     $last{'addold'} = $pre;
-    printDebug("saveAddold()-[!addold $pre $section $pretime $files $size ",
-               "$genre $nuke]--[$nick]--[$channel]--DONE--");
+    printDebug("saveAddold()-[!addold $pre $section $pretime $files $size "
+        ."$genre $nuke]--[$nick]--[$channel]--DONE--");
     return 0;
 }
 
@@ -1991,14 +1981,14 @@ sub saveNfo {
                       "such pre in db]--[!addnfo $pre $url $nfoname ]",
                       "--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveNfo()--[No such pre in db]--[!addnfo $pre $url ",
-                   "$nfoname ]--[$nick]--[$channel]");
+        printDebug("saveNfo()--[No such pre in db]--[!addnfo $pre $url "
+            ."$nfoname ]--[$nick]--[$channel]");
         return 0;
     }
 
     if (checkIfNfoExists($pre)) {
-        my $sql = "SELECT n.nfo FROM nfos AS n LEFT JOIN releases AS r ON ",
-                  "r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+        my $sql = "SELECT n.nfo FROM nfos AS n LEFT JOIN releases AS r ON \
+                r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
         my @params = ($pre);
 
         my $nfo = runSqlSingle($sql, @params);
@@ -2015,8 +2005,8 @@ sub saveNfo {
         return 0;
     }
 
-    printDebug("saveNfo()--[!addnfo $pre $url $nfoname]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("saveNfo()--[!addnfo $pre $url $nfoname]--[$nick]--[$channel]"
+        ."--START--");
 
     # jos tiedostopääte != .nfo
     my @suffix = split(/\./, $nfoname);
@@ -2025,8 +2015,8 @@ sub saveNfo {
                       "--[Suffix is not .nfo]--[!addnfo $pre $url $nfoname]",
                       "--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveNfo()--[Suffix is not .nfo]--[!addnfo $pre $url ",
-                   "$nfoname]--[$nick]--[$channel]");
+        printDebug("saveNfo()--[Suffix is not .nfo]--[!addnfo $pre $url "
+            ."$nfoname]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2035,8 +2025,8 @@ sub saveNfo {
                       "Blocked filename]--[!addnfo $pre $url $nfoname]--[",
                       "$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveNfo()--[Blocked filename]--[!addnfo $pre $url ",
-                   "$nfoname]--[$nick]");
+        printDebug("saveNfo()--[Blocked filename]--[!addnfo $pre $url "
+            ."$nfoname]--[$nick]");
         return 0;
     }
 
@@ -2086,8 +2076,8 @@ sub saveNfo {
                       "Unable to save nfo into db]--[!addnfo $pre $url ",
                       "$nfoname]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveNfo()--[Unable to save nfo into db]--[!addnfo $pre ",
-                   "$url $nfoname]--[$nick]--[$channel]");
+        printDebug("saveNfo()--[Unable to save nfo into db]--[!addnfo $pre "
+            ."$url $nfoname]--[$nick]--[$channel]");
         unlink("$hash");
 
         return 0;
@@ -2095,8 +2085,8 @@ sub saveNfo {
 
     unlink("$hash");
     $last{'nfo'} = $pre;
-    printDebug("saveNfo()--[!addnfo $pre $url $nfoname]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("saveNfo()--[!addnfo $pre $url $nfoname]--[$nick]--[$channel]"
+        ."--DONE--");
 
     return 0;
 }
@@ -2143,8 +2133,8 @@ sub saveUpdatetime {
         return 0;
     }
 
-    printDebug("saveUpdatetime()--[!updatetime $pre $newtime]--[$nick]--[",
-               "$channel]--START--");
+    printDebug("saveUpdatetime()--[!updatetime $pre $newtime]--[$nick]--["
+        ."$channel]--START--");
 
     my $time = time();
     if ($newtime > $time) { return 0; }
@@ -2157,8 +2147,8 @@ sub saveUpdatetime {
                       "saveUpdatetime()--[Unable to save updatetime]--[",
                       "!updatetime $pre $newtime]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveUpdatetime()--[Unable to save updatetime]--[",
-                   "!updateime $pre $newtime]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUpdatetime()--[Unable to save updatetime]--["
+            ."!updateime $pre $newtime]--[$nick]--[$channel]");
 
         return 0;
     }
@@ -2167,8 +2157,8 @@ sub saveUpdatetime {
                   "saveUpdatetime()--[Pretime updated for $pre]--[$nick]--[",
                   "$channel]";
     announceError($server, $message);
-    printDebug("saveUpdatetime()--[!updatetime $pre $newtime]--[$nick]--[",
-               "$channel]--DONE--");
+    printDebug("saveUpdatetime()--[!updatetime $pre $newtime]--[$nick]--["
+        ."$channel]--DONE--");
 
     return 0;
 }
@@ -2180,8 +2170,8 @@ sub saveUpdatenfo {
         $channel, $nick) = @_;
     my $time = time();
 
-    printDebug("saveUpdatenfo()--[!updatenfo $pre $url_fixed $nfoname]--[",
-               "$nick]--[$channel]--START--");
+    printDebug("saveUpdatenfo()--[!updatenfo $pre $url_fixed $nfoname]--["
+        ."$nick]--[$channel]--START--");
 
     my $releaseid = getReleaseId($pre);
     my $channelid = getChannelId($channel);
@@ -2229,8 +2219,8 @@ sub saveUpdatenfo {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveUpdatenfo()",
                       "--[Updating nfo failed for $pre]--[$nick]--[$channel]";
         announceError($server, $message);
-        printDebug("saveUpdatenfo()--[Updating nfo failed for $pre]--[$nick]",
-                   "--[$channel]");
+        printDebug("saveUpdatenfo()--[Updating nfo failed for $pre]--[$nick]"
+            ."--[$channel]");
     }
 
     unlink("$hash");
@@ -2238,8 +2228,8 @@ sub saveUpdatenfo {
                   "saveUpdatenfo()--[Nfo updated for $pre]--[$nick]",
                   "--[$channel]";
     announceError($server, $message);
-    printDebug("saveUpdatenfo()--[!updatenfo $pre $url_fixed $nfoname]--[",
-               "$nick]--[$channel]--DONE--");
+    printDebug("saveUpdatenfo()--[!updatenfo $pre $url_fixed $nfoname]--["
+        ."$nick]--[$channel]--DONE--");
 
     return 0;
 }
@@ -2263,8 +2253,8 @@ sub saveUrl {
                           "--[No such pre in db]--[!addurl $pre $url]--[",
                           "$nick]--[$channel]";
             announceError($server, $message);
-            printDebug("[ERROR] saveUrl()--[No such pre in db]--[!addurl ",
-                       "$pre $url]--[$nick]--[$channel]");
+            printDebug("[ERROR] saveUrl()--[No such pre in db]--[!addurl "
+                ."$pre $url]--[$nick]--[$channel]");
         }
         $error{'url'} = $pre;
         return 0;
@@ -2286,8 +2276,8 @@ sub saveUrl {
     my $channelId = getChannelId($channel);
 
     if (!checkIfAllowedUrl($url)) {
-        printDebug("[ERROR] saveUrl()--[Url is not allowed]--[!addurl $pre ",
-                   "$url]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUrl()--[Url is not allowed]--[!addurl $pre "
+            ."$url]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2300,8 +2290,8 @@ sub saveUrl {
                       "Unable to save url]--[!addurl $pre $url]--[$nick]--[",
                       "$channel]";
         announceError($server, $message);
-        printDebug("[ERROR] saveUrl()--[Unable to save url]--[!addurl $pre ",
-                   "$url]--[$nick]--[$channel]");
+        printDebug("[ERROR] saveUrl()--[Unable to save url]--[!addurl $pre "
+            ."$url]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2331,7 +2321,8 @@ sub echoInfo {
 
     if ($output{'echo'}) {
         my $message;
-        my $pretime = "SELECT pretime FROM releases WHERE releasename = ? LIMIT 1";
+        my $pretime = "SELECT pretime FROM releases WHERE releasename = ? \
+                LIMIT 1";
         my @params = ($pre);
 
         $pretime = runSqlSingle($pretime, @params);
@@ -2358,7 +2349,8 @@ sub echoGenre {
     if ($output{'echo'}) {
 
         my $message;
-        my $pretime = "SELECT pretime FROM releases WHERE releasename = ? LIMIT 1";
+        my $pretime = "SELECT pretime FROM releases WHERE releasename = ? \
+                LIMIT 1";
         my @params = ($pre);
 
         $pretime = runSqlSingle($pretime, @params);
@@ -2417,8 +2409,8 @@ sub echoNukes {
             return 0;
         }
 
-        my $sql = "SELECT networkshort, channelname FROM channels WHERE ",
-                  "BINARY allowednukenets LIKE ? AND BINARY channelrights LIKE ?";
+        my $sql = "SELECT networkshort, channelname FROM channels WHERE \
+            BINARY allowednukenets LIKE ? AND BINARY channelrights LIKE ?";
         my @params = ("%$nukenet%", "%$nukeecho%");
 
         my @channels = runSqlMulti($sql, @params);
@@ -2458,9 +2450,8 @@ sub echoDelpre {
             return 0;
         }
 
-        my $sql = "SELECT networkshort, channelname FROM channels WHERE ",
-                  "BINARY alloweddelprenets LIKE ? AND BINARY channelrights ",
-                  "LIKE ?";
+        my $sql = "SELECT networkshort, channelname FROM channels WHERE \
+            BINARY alloweddelprenets LIKE ? AND BINARY channelrights LIKE ?";
         my @params = ("%$nukenet%", "%$delpreecho%");
 
         my @channels = runSqlMulti($sql, @params);
@@ -2705,17 +2696,17 @@ sub checkIfAllowedGenre {
     my $sql;
     
     if ($pre =~ m/.*\.(XXX|IMGSET|IMAGESET).*/i) {
-        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND ",
-               "porn = ? LIMIT 1";
+        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND \
+            porn = ? LIMIT 1";
     }
     elsif ($pre =~ m/.*(-|_|\.)(XVID|x264|DVDR|HDTV|PDTV|SDTV|BLURAY|BDRip|BD5|
            BD9|720p|1080p|MBLURAY|MDVDR|VC1|DIVX|NTSC)(-|_|\.)/i) {
-        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND ",
-               "video = ? LIMIT 1";
+        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND \
+            video = ? LIMIT 1";
     }
     else {
-        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND ",
-               "audio = ? LIMIT 1";
+        $sql = "SELECT genrename FROM allowedgenres WHERE genrename = ? AND \
+            audio = ? LIMIT 1";
     }
 
     my @params = ($genre, 1);
@@ -2913,9 +2904,9 @@ sub getChannels {
 
     sqlConnect();
 
-    my $sql = "SELECT channelid, channelname, channelrights, networkshort, ",
-              "networkname FROM channels WHERE 1 = ? ORDER BY priority ASC";
-    my @params = (1);
+    my $sql = "SELECT channelid, channelname, channelrights, networkshort, \
+              networkname FROM channels ORDER BY priority ASC";
+    my @params = ();
 
     my @result = runSqlMulti($sql, @params);
 
@@ -2937,7 +2928,8 @@ sub getChannels {
         my $network = $result[$i][4];
 
         foreach (@allFlags) {
-            printDebug("getChannels()--[Network: $network]--[Channel: $channel]--[Flag: $_]");
+            printDebug("getChannels()--[Network: $network]--[Channel: "
+                ."$channel]--[Flag: $_]");
 
             if ($_ eq 'l') { 
                 push(@search_channels, $channel); 
@@ -2947,20 +2939,48 @@ sub getChannels {
                 push(@pre_channels, $channel); 
                 push(@pre_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 'b') { push(@addpre_channels, $channel); }
-            if ($_ eq 'g') { push(@addpre_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'c') { push(@info_channels, $channel); }
-            if ($_ eq 'h') { push(@info_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'c') { push(@gn_channels, $channel); }
-            if ($_ eq 'w') { push(@gn_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'f') { push(@delpre_channels, $channel); }
-            if ($_ eq 'j') { push(@delpre_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'e') { push(@addold_channels, $channel); }
-            if ($_ eq 'k') { push(@addold_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'd') { push(@nuke_channels, $channel); }
-            if ($_ eq 'i') { push(@nuke_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'd') { push(@unnuke_channels, $channel); }
-            if ($_ eq 'x') { push(@unnuke_channels_echo, $channelWithNetwork); }
+            if ($_ eq 'b') { 
+                push(@addpre_channels, $channel); 
+            }
+            if ($_ eq 'g') { 
+                push(@addpre_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'c') { 
+                push(@info_channels, $channel); 
+            }
+            if ($_ eq 'h') { 
+                push(@info_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'c') { 
+                push(@gn_channels, $channel); 
+            }
+            if ($_ eq 'w') { 
+                push(@gn_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'f') { 
+                push(@delpre_channels, $channel); 
+            }
+            if ($_ eq 'j') { 
+                push(@delpre_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'e') { 
+                push(@addold_channels, $channel); 
+            }
+            if ($_ eq 'k') { 
+                push(@addold_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'd') { 
+                push(@nuke_channels, $channel); 
+            }
+            if ($_ eq 'i') { 
+                push(@nuke_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'd') { 
+                push(@unnuke_channels, $channel); 
+            }
+            if ($_ eq 'x') { 
+                push(@unnuke_channels_echo, $channelWithNetwork); 
+            }
             if ($_ eq 'm') { 
                 push(@play_channels, $channel); 
                 push(@play_channels_echo, $channelWithNetwork); 
@@ -2969,8 +2989,12 @@ sub getChannels {
                 push(@getold_channels, $channel); 
                 push(@getold_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 'q') { push(@sitepre_channels, $channel); }
-            if ($_ eq 'r') { push(@sitepre_channels_echo, $channelWithNetwork); }
+            if ($_ eq 'q') { 
+                push(@sitepre_channels, $channel); 
+            }
+            if ($_ eq 'r') { 
+                push(@sitepre_channels_echo, $channelWithNetwork); 
+            }
             if ($_ eq 'a') { 
                 push(@admin_channels, $channel); 
                 push(@admin_channels_echo, $channelWithNetwork); 
@@ -2979,13 +3003,24 @@ sub getChannels {
                 push(@nukenet_search_channels, $channel); 
                 push(@nukenet_search_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 's') { push(@addnfo_channels, $channel); }
-            if ($_ eq 't') { push(@addnfo_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'y') { push(@ginfo_channels, $channel); }
-            if ($_ eq 't') { push(@ginfo_channels_echo, $channelWithNetwork); }
-            if ($_ == 1) { push(@addurl_channels, $channel); }
-            if ($_ == 2) { push(@addurl_channels_echo, $channelWithNetwork); }
-
+            if ($_ eq 's') { 
+                push(@addnfo_channels, $channel); 
+            }
+            if ($_ eq 't') { 
+                push(@addnfo_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'y') { 
+                push(@ginfo_channels, $channel); 
+            }
+            if ($_ eq 't') { 
+                push(@ginfo_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ == 1) { 
+                push(@addurl_channels, $channel); 
+            }
+            if ($_ == 2) { 
+                push(@addurl_channels_echo, $channelWithNetwork); 
+            }
         }
         $i++;
     }
@@ -3311,12 +3346,12 @@ sub checkNukenet {
     my $sql;
 
     if ($type eq "delpre") {
-        $sql = "SELECT nukenetid, delprestatus FROM nukenets WHERE nukenetname = ? ",
-               "LIMIT 1";
+        $sql = "SELECT nukenetid, delprestatus FROM nukenets WHERE \
+            nukenetname = ? LIMIT 1";
     }
     elsif ($type eq "nuke") {
-        $sql = "SELECT nukenetid, nukestatus FROM nukenets WHERE nukenetname = ? ",
-               "LIMIT 1";
+        $sql = "SELECT nukenetid, nukestatus FROM nukenets WHERE \
+            nukenetname = ? LIMIT 1";
     }
     else {
         return 0;
@@ -3374,8 +3409,8 @@ sub checkIfPreExists {
 sub checkIfInfoExists {
     my $pre = shift;
 
-    my $sql = "SELECT i.releaseid FROM infos as i LEFT JOIN releases AS r ON ",
-              "r.releaseid = i.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT i.releaseid FROM infos as i LEFT JOIN releases AS r ON \
+            r.releaseid = i.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
@@ -3391,8 +3426,8 @@ sub checkIfInfoExists {
 sub checkIfGenreExists {
     my $pre = shift;
 
-    my $sql = "SELECT g.genreid FROM genres AS g LEFT JOIN releases AS r ON ",
-              "r.releaseid = g.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT g.genreid FROM genres AS g LEFT JOIN releases AS r ON \
+            r.releaseid = g.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
@@ -3408,8 +3443,8 @@ sub checkIfGenreExists {
 sub checkIfUrlExists {
     my $pre = shift;
 
-    my $sql = "SELECT u.releaseid FROM urls AS u LEFT JOIN releases as r ON ",
-              "r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT u.releaseid FROM urls AS u LEFT JOIN releases as r ON \
+            r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
@@ -3424,8 +3459,8 @@ sub checkIfUrlExists {
 sub checkIfNfoExists {
     my $pre = shift;
 
-    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON ",
-              "r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON \
+            r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
