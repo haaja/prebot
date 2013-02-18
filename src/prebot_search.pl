@@ -67,7 +67,8 @@
 ##
 ##	Addoldchannels
 ##	==============
-##	    !addold <release> <section> <pretime> <files> <size> <genre> <nukereason>
+##	    !addold <release> <section> <pretime> <files> <size> <genre> 
+##                  <nukereason>
 ##	    !time
 ##	    !howmany <group>
 ##	    !convert <unixtime>
@@ -102,7 +103,7 @@
 ##	    !fix <release> <section>
 ##	    !spreadnfo <release>
 ##
-############################################################################################
+###############################################################################
 
 #use warnings;
 use strict;
@@ -242,10 +243,12 @@ Irssi::signal_add("message public", "prebotSearch");
 #sub handleTriggers {
 #	my ($server, $text, $nick, $address, $channel) = @_;
 #
-#	my $thr = threads->create(\&prebot_search, $server, $text, $nick, $address, $channel);
+#	my $thr = threads->create(\&prebot_search, $server, $text, $nick, 
+#	        $address, $channel);
 #
 #	if (!$thr) {
-#		printDebug("[ERROR] handleTriggers()--[Unable to create new thread]");
+#		printDebug("[ERROR] handleTriggers()--[Unable to create new "
+#		        ."thread]");
 #	}
 #
 #	$thr->detach();
@@ -438,18 +441,17 @@ sub searchDb {
     $genres = $format->format_number($genres);
     $nfos = $format->format_number($nfos);
 
-    my $message = "[ ".$limegreen."DB".$reset." ]::[ ".$limegreen."RLS".",
-                  "$reset.": ".$darkgrey."$total".$reset." ]::[ ".$limegreen.",
-                  ""INFOS".$reset.": ".$darkgrey."$infos".$reset." ]::[ ".",
-                  "$limegreen."GENRES".$reset.": ".$darkgrey."$genres".$reset."",
-                  " ]::[ ".$limegreen."NUKES".$reset.": ".$darkgrey."$nuked".",
-                  "$reset." ]::[ ".$limegreen."UNNUKES".$reset.": ".",
-                  "$darkgrey."$unnuked".$reset." ]::[ ".$limegreen."DELETED".",
-                  "$reset.": ".$darkgrey."$deleted".$reset." ]::[ ".",
-                  "$limegreen."NFOS".$reset.": ".$darkgrey."$nfos".$reset." ]";
+    my $message = "[ ".$limegreen."DB".$reset." ]::[ ".$limegreen."RLS"
+        .$reset.": ".$darkgrey."$total".$reset." ]::[ ".$limegreen."INFOS"
+        .$reset.": ".$darkgrey."$infos".$reset." ]::[ ".$limegreen."GENRES"
+        .$reset.": ".$darkgrey."$genres".$reset." ]::[ ".$limegreen."NUKES"
+        .$reset.": ".$darkgrey."$nuked".$reset." ]::[ ".$limegreen."UNNUKES"
+        .$reset.": ".$darkgrey."$unnuked".$reset." ]::[ "
+        .$limegreen."DELETED".$reset.": ".$darkgrey."$deleted".$reset." ]::[ "
+        .$limegreen."NFOS".$reset.": ".$darkgrey."$nfos".$reset." ]";
     $server->command("MSG $channel $message");
 
-    print " searchDb()--[$nick]--[$channel]--DONE--";
+    printDebug("searchDb()--[$nick]--[$channel]--DONE--");
 
     return 0;
 }
@@ -474,8 +476,8 @@ sub searchPre {
             $param =~ s/-section=//i;
             $param =~ s/-s=//i;
 
-            my $sql = "SELECT sectionid FROM sections WHERE sectionname = ? ",
-                      "LIMIT 1";
+            my $sql = "SELECT sectionid FROM sections WHERE sectionname = ? \
+                LIMIT 1";
             my @params = ($param);
             $section = runSqlSingle($sql, @params);
 
@@ -503,29 +505,24 @@ sub searchPre {
             foreach my $i (@filter_temp) {
                 # Special langs rule which filters foreign releases
                 if ($i eq "langs") {
-                    $filter = $filter . "AND r.releasename NOT LIKE '%german%' " .
-                        "AND r.releasename NOT LIKE '%french%' " .
-                        "AND r.releasename NOT LIKE '%italian%' " .
-                        "AND r.releasename NOT LIKE '%swedish%' " .
-                        "AND r.releasename NOT LIKE '%flemish%' " .
-                        "AND r.releasename NOT LIKE '%dutch%' " .
-                        "AND r.releasename NOT LIKE '%.kr.%' " .
-                        "AND r.releasename NOT LIKE '%.cz-%' " .
-                        "AND r.releasename NOT LIKE '%.cz.%' " .
-                        "AND r.releasename NOT LIKE '%.nl.%' " .
-                        "AND r.releasename NOT LIKE '%.pl.%' " .
-                        "AND r.releasename NOT LIKE '%.hun.%' " .
-                        "AND r.releasename NOT LIKE '%.hun-%' " .
-                        "AND r.releasename NOT LIKE '%.es-%' " .
-                        "AND r.releasename NOT LIKE '%hungarian%' " .
-                        "AND r.releasename NOT LIKE '%spanish%' " .
-                        "AND r.releasename NOT LIKE '%greek%' " .
-                        "AND r.releasename NOT LIKE '%BRAZiLiAN%' " .
-                        "AND r.releasename NOT LIKE '%TRUEFRENCH%' " .
-                        "AND r.releasename NOT LIKE '%NORWEGIAN%' " .
-                        "AND r.releasename NOT LIKE '%.PT.%' " .
-                        "AND r.releasename NOT LIKE '%CUSTOM.%.SUBS%' " .
-                        "AND r.releasename NOT LIKE '%finnish%' ";
+                    $filter = $filter . "AND r.releasename NOT LIKE '%german%' \
+                        AND r.releasename NOT LIKE '%french%' AND \
+                        r.releasename NOT LIKE '%italian%' AND r.releasename \
+                        NOT LIKE '%swedish%' AND r.releasename NOT LIKE \
+                        '%flemish%' AND r.releasename NOT LIKE '%dutch%' AND \
+                        r.releasename NOT LIKE '%.kr.%' AND r.releasename NOT \
+                        LIKE '%.cz-%' AND r.releasename NOT LIKE '%.cz.%' AND \
+                        r.releasename NOT LIKE '%.nl.%' AND r.releasename NOT \
+                        LIKE '%.pl.%' AND r.releasename NOT LIKE '%.hun.%' \
+                        AND r.releasename NOT LIKE '%.hun-%' AND r.releasename \
+                        NOT LIKE '%.es-%' AND r.releasename NOT LIKE \
+                        '%hungarian%' AND r.releasename NOT LIKE '%spanish%' \
+                        AND r.releasename NOT LIKE '%greek%' AND r.releasename \
+                        NOT LIKE '%BRAZiLiAN%' AND r.releasename NOT LIKE \
+                        '%TRUEFRENCH%' AND r.releasename NOT LIKE \
+                        '%NORWEGIAN%' AND r.releasename NOT LIKE '%.PT.%' AND \
+                        r.releasename NOT LIKE '%CUSTOM.%.SUBS%' AND \
+                        r.releasename NOT LIKE '%finnish%' ";
                 }
                 else {
                     $filter = $filter . "AND r.releasename NOT LIKE ? ";
@@ -542,15 +539,15 @@ sub searchPre {
     $search =~ s/ /%/gi;
     $search =~ s/\*/%/gi;
 
-    my $sql = "SELECT r.releaseid FROM releases AS r
-        LEFT JOIN sections AS s ON s.sectionid = r.sectionid
-        LEFT JOIN groups AS g ON g.groupid = r.groupid";
+    my $sql = "SELECT r.releaseid FROM releases AS r LEFT JOIN sections AS s \
+        ON s.sectionid = r.sectionid LEFT JOIN groups AS g ON g.groupid = \
+        r.groupid";
     my @params;
     my $releaseId;
 
     if (length($search) < 3 && !$section && !$group && !$filter) {
-        $sql = $sql." WHERE r.pretime BETWEEN ? AND ? ORDER BY r.pretime ",
-               "DESC LIMIT 1";
+        $sql = $sql." WHERE r.pretime BETWEEN ? AND ? ORDER BY r.pretime \
+            DESC LIMIT 1";
         @params = (time()-3600, time());
 
         $releaseId = runSqlSingle($sql, @params);
@@ -622,16 +619,14 @@ sub searchPre {
         }
     }
 
-    $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-        "s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url
-        FROM releases AS r
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-        LEFT JOIN nfos AS n ON r.releaseid = n.releaseid
-        LEFT JOIN urls AS u ON r.releaseid = u.releaseid
-        WHERE r.releaseid = ? LIMIT 1";
+    $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url FROM \
+        releases AS r LEFT JOIN sections AS s ON r.sectionid = s.sectionid \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
+        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
+        r.releaseid = i.releaseid LEFT JOIN nfos AS n ON r.releaseid = \
+        n.releaseid LEFT JOIN urls AS u ON r.releaseid = u.releaseid WHERE \
+        r.releaseid = ? LIMIT 1";
     @params = ($releaseId);
 
     my @result = runSqlMulti($sql, @params);
@@ -660,14 +655,14 @@ sub searchPre {
 
     if ($status != 1) {
         if ($status == 2) {
-            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER ",
-                   "BY nuketime DESC LIMIT 1";
+            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER \
+                BY nuketime DESC LIMIT 1";
             @params = ($releaseid);
             $nukereason = $reset."[ ".$red."NUKED:".$reset." ";
         }
         else {
-            $sql = "SELECT unnukereason, nukenetid FROM unnukes WHERE ",
-                   "releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
+            $sql = "SELECT unnukereason, nukenetid FROM unnukes WHERE \
+                releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
             @params = ($releaseid);
             $nukereason = $reset."[ ".$limegreen."UNNUKED".$reset.": ";
         }
@@ -676,8 +671,8 @@ sub searchPre {
         $nukereason = $nukereason.$darkgrey.$nr.$reset." ]::";
     }
 
-    my $message = $reset."[ ".$limegreen.$section.$reset." ]::[ ".$darkgrey.",
-                  "$pre.$reset." ]::";
+    my $message = $reset."[ ".$limegreen.$section.$reset." ]::[ "
+            .$darkgrey.$pre.$reset." ]::";
     if ($size) { 
         $infos = $reset."[ ".$darkgrey.$files."F/".$size."MB".$reset." ]::"; 
     }
@@ -687,8 +682,8 @@ sub searchPre {
     if ($url) { 
         $url = $reset."[ ".$darkgrey.$url.$reset." ]::"; 
     }
-    $pretime = $reset."[ ".$darkgrey."PRETIME: $ago ago on $date[0].$date[1].",
-               "$date[2] ".$pretime_human.$reset." ]::";
+    $pretime = $reset."[ ".$darkgrey."PRETIME: $ago ago on $date[0].$date[1]
+        .$date[2] ".$pretime_human.$reset." ]::";
 
     $message = $message.$pretime.$infos.$genre.$nukereason.$url.$nfo;
 
@@ -734,8 +729,8 @@ sub searchDupe {
             $option =~ s/-section=//i;
             $option =~ s/-s=//i;
 
-            $sql = "SELECT sectionid FROM sections WHERE sectionname = ? ",
-                   "LIMIT 1";
+            $sql = "SELECT sectionid FROM sections WHERE sectionname = ? \
+                LIMIT 1";
             my @params = ($option);
             $section = runSqlSingle($sql, @params);
 
@@ -775,30 +770,25 @@ sub searchDupe {
 
             foreach my $i (@not_temp) {
                 if ($i eq "langs") {
-                    $not = $not . "AND r.releasename NOT LIKE '%german%' " .
-                        "AND r.releasename NOT LIKE '%french%' " .
-                        "AND r.releasename NOT LIKE '%italian%' " .
-                        "AND r.releasename NOT LIKE '%swedish%' " .
-                        "AND r.releasename NOT LIKE '%flemish%' " .
-                        "AND r.releasename NOT LIKE '%dutch%' " .
-                        "AND r.releasename NOT LIKE '%.kr.%' " .
-                        "AND r.releasename NOT LIKE '%.cz-%' " .
-                        "AND r.releasename NOT LIKE '%.cz.%' " .
-                        "AND r.releasename NOT LIKE '%.nl.%' " .
-                        "AND r.releasename NOT LIKE '%.pl.%' " .
-                        "AND r.releasename NOT LIKE '%.hun.%' " .
-                        "AND r.releasename NOT LIKE '%.hun-%' " .
-                        "AND r.releasename NOT LIKE '%.es-%' " .
-                        "AND r.releasename NOT LIKE '%hungarian%' " .
-                        "AND r.releasename NOT LIKE '%spanish%' " .
-                        "AND r.releasename NOT LIKE '%greek%' " .
-                        "AND r.releasename NOT LIKE '%BRAZiLiAN%' " .
-                        "AND r.releasename NOT LIKE '%TRUEFRENCH%' " .
-                        "AND r.releasename NOT LIKE '%NORWEGIAN%' " .
-                        "AND r.releasename NOT LIKE '%.PT.%' " .
-                        "AND r.releasename NOT LIKE '%CUSTOM.%.SUBS%' " .
-                        "AND r.releasename NOT LIKE '%DANISH%' " .
-                        "AND r.releasename NOT LIKE '%finnish%' ";
+                    $not = $not . "AND r.releasename NOT LIKE '%german%' AND \
+                        r.releasename NOT LIKE '%french%' AND r.releasename \
+                        NOT LIKE '%italian%' AND r.releasename NOT LIKE 
+                        '%swedish%' AND r.releasename NOT LIKE '%flemish%' \
+                        AND r.releasename NOT LIKE '%dutch%' AND r.releasename \
+                        NOT LIKE '%.kr.%' AND r.releasename NOT LIKE '%.cz-%' \
+                        AND r.releasename NOT LIKE '%.cz.%' AND r.releasename \
+                        NOT LIKE '%.nl.%' AND r.releasename NOT LIKE '%.pl.%' \
+                        AND r.releasename NOT LIKE '%.hun.%' AND \
+                        r.releasename NOT LIKE '%.hun-%' AND r.releasename \
+                        NOT LIKE '%.es-%' AND r.releasename NOT LIKE \
+                        '%hungarian%' AND r.releasename NOT LIKE '%spanish%' \
+                        AND r.releasename NOT LIKE '%greek%' AND \
+                        r.releasename NOT LIKE '%BRAZiLiAN%' AND r.releasename \
+                        NOT LIKE '%TRUEFRENCH%' AND r.releasename NOT LIKE \
+                        '%NORWEGIAN%' AND r.releasename NOT LIKE '%.PT.%' AND \
+                        r.releasename NOT LIKE '%CUSTOM.%.SUBS%' AND \
+                        r.releasename NOT LIKE '%DANISH%' AND r.releasename \
+                        NOT LIKE '%finnish%' ";
                 }
                 else {
                     $not = $not . "AND r.releasename NOT LIKE '%$i%' ";
@@ -823,16 +813,14 @@ sub searchDupe {
         @params = ("$pre%");
     }
 
-    $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-        "s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url
-        FROM releases AS r
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN nfos AS n ON r.releaseid = n.releaseid
-        LEFT JOIN urls AS u ON r.releaseid = u.releaseid
-        WHERE $query $section $group $not $sort $limit";
+    $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+        s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url FROM \
+        releases AS r LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT \
+        JOIN allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i \
+        ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
+        s.sectionid LEFT JOIN nfos AS n ON r.releaseid = n.releaseid LEFT \
+        JOIN urls AS u ON r.releaseid = u.releaseid WHERE $query $section \
+        $group $not $sort $limit";
 
     my @result = runSqlMulti($sql, @params);
 
@@ -843,16 +831,14 @@ sub searchDupe {
 
     if ($result[0][0] == 0 && $query ne "WHERE 1 = ?") {
         $query = "r.releasename LIKE ?";
-        $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-            "s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url
-            FROM releases AS r
-            LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-            LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-            LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-            LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-            LEFT JOIN nfos AS n ON r.releaseid = n.releaseid
-            LEFT JOIN urls AS u ON r.releaseid = u.releaseid
-            WHERE $query $section $group $not $sort $limit";
+        $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+            s.sectionname, a.genrename, i.files, i.size, n.releaseid, u.url \
+            FROM releases AS r LEFT JOIN genres AS g ON r.releaseid = \
+            g.releaseid LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid \
+            LEFT JOIN infos AS i ON r.releaseid = i.releaseid LEFT JOIN \
+            sections AS s ON r.sectionid = s.sectionid LEFT JOIN nfos AS n ON \
+            r.releaseid = n.releaseid LEFT JOIN urls AS u ON r.releaseid = \
+            u.releaseid WHERE $query $section $group $not $sort $limit";
         @params = ("%$pre%");
 
         @result = runSqlMulti($sql, @params);
@@ -886,13 +872,13 @@ sub searchDupe {
             # let's fetch the reason and network if status is nuked or unnuked.
             if ($status != 1) {
                 if ($status == 2) {
-                    $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ",
-                           "ORDER BY nukeid DESC LIMIT 1";
+                    $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? \
+                        ORDER BY nukeid DESC LIMIT 1";
                     $nukereason = $reset."[ ".$red."NUKED".$reset.": ";
                 }
                 else {
-                    $sql = "SELECT unnukereason FROM unnukes WHERE ",
-                           "releaseid = ? ORDER BY unnukeid DESC LIMIT 1";
+                    $sql = "SELECT unnukereason FROM unnukes WHERE \
+                        releaseid = ? ORDER BY unnukeid DESC LIMIT 1";
                     $nukereason = $reset."[ ".$limegreen."UNNUKED".$reset.": ";
                 }
 
@@ -909,11 +895,11 @@ sub searchDupe {
             $k = $i + 1;
             if (length($k) == 1) { $k = "0" . $k; }
 
-            $message = $reset." [".$limegreen.$k.$reset."]::[ ".$limegreen.",
-                       "$section.$reset." ]::[ ".$darkgrey.$pre.$reset." ]::";
+            $message = $reset." [".$limegreen.$k.$reset."]::[ ".$limegreen.
+                    $section.$reset." ]::[ ".$darkgrey.$pre.$reset." ]::";
             if ($size) { 
-                $files = $reset."[ ".$darkgrey.$files."F".$reset."/"",
-                        ".$darkgrey.$size."MB ".$reset."]::"; 
+                $files = $reset."[ ".$darkgrey.$files."F".$reset."/"
+                    .$darkgrey.$size."MB ".$reset."]::"; 
             }
             if ($genre) { 
                 $genre = $reset."[ ".$darkgrey.$genre.$reset." ]::"; 
@@ -925,9 +911,9 @@ sub searchDupe {
                 $nfo = "[ ".$limegreen."NFO ".$reset."]::"; 
             }
             
-            $pretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey",
-                       "."$ago ago on $date[0].$date[1].$date[2] ",
-                       "$pretime_human ".$reset."]::";
+            $pretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey
+                ."$ago ago on $date[0].$date[1].$date[2] $pretime_human "
+                .$reset."]::";
             $message = $message.$pretime.$files.$genre.$nukereason.$url.$nfo;
             $server->command("MSG $nick $message");
             usleep($sleeptime);
@@ -962,23 +948,20 @@ sub searchGetold {
 
     printDebug("searchGetold()--[!getold $pre]--[$nick]--[$channel]--START--");
 
-    my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-        "s.sectionname, a.genrename, i.files, i.size
-        FROM releases AS r
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.Releaseid
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN groups AS gr ON r.groupid = gr.groupid
-        WHERE r.releasename = ?
-        LIMIT 0,1";
+    my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+        s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
+        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
+        r.releaseid = i.Releaseid LEFT JOIN sections AS s ON r.sectionid = \
+        s.sectionid LEFT JOIN groups AS gr ON r.groupid = gr.groupid WHERE \
+        r.releasename = ? LIMIT 0,1";
     my @params = ($pre);
 
     my @Result = runSqlMulti($sql, @params);
 
     if ($Result[0][3] == 2) {
-        $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER BY ",
-               "nukeid DESC LIMIT 1";
+        $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER BY \
+            nukeid DESC LIMIT 1";
         @params = ($Result[0][0]);
 
         $nuke = runSqlSingle($sql, @params);
@@ -1054,16 +1037,19 @@ sub searchPlay {
         my ($pre1, $pre2, $start, $end);
 
         if ($nfos) {
-            my $sql = "SELECT pretime FROM releases WHERE releasename = ? LIMIT 1";
+            my $sql = "SELECT pretime FROM releases WHERE releasename = ? \
+                LIMIT 1";
             my @localParams = ($haku[2]);
             $pre1 = runSqlSingle($sql, @localParams);
 
-            $sql = "SELECT pretime FROM releases WHERE releasename = ? LIMIT 1";
+            $sql = "SELECT pretime FROM releases WHERE releasename = ? \
+                LIMIT 1";
             @localParams = ($haku[3]);
             $pre2 = runSqlSingle($sql, @localParams);
         }
         else {
-            my $sql = "SELECT pretime FROM releases WHERE releasename = ? LIMIT 1";
+            my $sql = "SELECT pretime FROM releases WHERE releasename = ? \
+                LIMIT 1";
             my @localParams = ($haku[1]);
             $pre1 = runSqlSingle($sql, @localParams);
 
@@ -1159,18 +1145,14 @@ sub searchPlay {
         return 0;
     }
 
-    my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-        "s.sectionname, a.genrename, i.files, i.size, n.nfoname, n.nfo
-        FROM releases AS r
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN groups AS gr ON r.groupid = gr.groupid
-        LEFT JOIN nfos AS n ON n.releaseid = r.releaseid
-        WHERE 1 = ? $search
-        ORDER BY r.pretime DESC
-        LIMIT $limit";
+    my $sql = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+        s.sectionname, a.genrename, i.files, i.size, n.nfoname, n.nfo FROM \
+        releases AS r LEFT JOIN genres AS g ON r.releaseid = g.releaseid \
+        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos \
+        AS i ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON \
+        r.sectionid = s.sectionid LEFT JOIN groups AS gr ON r.groupid = \
+        gr.groupid LEFT JOIN nfos AS n ON n.releaseid = r.releaseid WHERE \
+        1 = ? $search ORDER BY r.pretime DESC LIMIT $limit";
 
     my @result = runSqlMulti($sql, @params);
 
@@ -1204,8 +1186,8 @@ sub searchPlay {
         my $nuke = "-";
 
         if ($status == 2) {
-            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER ",
-                   "BY nuketime DESC LIMIT 1";
+            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER \
+                BY nuketime DESC LIMIT 1";
             my @localParams = ($releaseid);
             $nuke = runSqlSingle($sql, @localParams);
         }
@@ -1250,9 +1232,9 @@ sub searchGetnfo {
         return 0;
     }
 
-    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo FROM nfos AS n ",
-              "LEFT JOIN releases AS r ON r.releaseid = n.releaseid ",
-              "WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo FROM nfos AS n LEFT JOIN \
+        releases AS r ON r.releaseid = n.releaseid WHERE r.releasename = ? \
+        LIMIT 1";
     my @params = ($pre);
     my @result = runSqlMulti($sql, @params);
     my $releaseid = $result[0][0];
@@ -1292,8 +1274,8 @@ sub searchGeturl {
         return 0;
     }
 
-    my $sql = "SELECT u.url FROM urls AS u LEFT JOIN releases AS r ON ",
-              "r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT u.url FROM urls AS u LEFT JOIN releases AS r ON \
+        r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my $url = runSqlSingle($sql, @params);
 
@@ -1314,13 +1296,8 @@ sub searchSpreadNfo {
     my ($text, $server, $channel, $nick) = @_;
     my $pre = $text;
 
-    if (!($nick eq "teletappi" || $nick eq "|LiSSU|")) {
-        print " User: $nick has no rights to spread nfos.";
-        return 0;
-    }
-
-    printDebug("searchSpreadNfo()--[!spreadnfo $pre]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("searchSpreadNfo()--[!spreadnfo $pre]--[$nick]--[$channel]"
+        ."--START--");
 
     $pre = trim($pre);
 
@@ -1328,9 +1305,9 @@ sub searchSpreadNfo {
         return 0;
     }
 
-    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo, r.pretime FROM nfos AS n ",
-              "LEFT JOIN releases AS r ON r.releaseid = n.releaseid ",
-              "WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid, n.nfoname, n.nfo, r.pretime FROM nfos AS n \
+        LEFT JOIN releases AS r ON r.releaseid = n.releaseid WHERE \
+        r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my @result = runSqlMulti($sql, @params);
     my $releaseid = $result[0][0];
@@ -1360,15 +1337,14 @@ sub searchSpreadNfo {
         else {
             $message = "!oldnfo $pre $nfodnurl$releaseid $nfoname $crc";
         }
-        print " Spreading nfo: $message";
 
         foreach my $channel (@addnfo_channels_echo) {
             $server->command("MSG $channel $message");
         }
     }
 
-    printDebug("searchSpreadNfo()--[!spreadnfo $pre]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("searchSpreadNfo()--[!spreadnfo $pre]--[$nick]--[$channel]"
+        ."--DONE--");
     return 0;
 }
 
@@ -1377,8 +1353,8 @@ sub searchSpreadNfo {
 sub checkIfNfoExists {
     my $pre = shift;
 
-    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ",
-              "ON r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON \
+        r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my $id = runSqlSingle($sql, @params);
 
@@ -1395,8 +1371,8 @@ sub checkIfNfoExists {
 sub checkIfUrlExists {
     my $pre = shift;
 
-    my $sql = "SELECT u.releaseid FROM urls AS u LEFT JOIN releases as r ON ",
-              "r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT u.releaseid FROM urls AS u LEFT JOIN releases as r ON \
+        r.releaseid = u.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
 
     if (runSqlSingle($sql, @params)) {
@@ -1416,8 +1392,8 @@ sub searchGroup {
     # remove _int at the end of group
     $group =~ s/_int$//i;
 
-    my $sql = "SELECT count(r.releaseid) FROM releases AS r INNER JOIN groups ",
-              "AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ? LIMIT 1";
+    my $sql = "SELECT count(r.releaseid) FROM releases AS r INNER JOIN groups \
+        AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ? LIMIT 1";
     my @params = ($group);
     my $total = runSqlSingle($sql, @params);
     if (!$total) {
@@ -1432,36 +1408,32 @@ sub searchGroup {
     $sql = "SELECT groupname FROM groups WHERE groupname = ? LIMIT 1";
     my $groupname = runSqlSingle($sql, @params);
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups AS ",
-           "gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND r.status = ?";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups AS \
+        gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND r.status = ?";
     @params = ($group, 2);
     my $nuked = runSqlSingle($sql, @params);
     my $nukedpercentage = sprintf("%.2f", ($nuked / $total * 100));
 
-    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups ",
-           "AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND ",
-           "r.status = ?";
+    $sql = "SELECT COUNT(r.releaseid) FROM releases AS r INNER JOIN groups AS \
+        gr ON r.groupid = gr.groupid WHERE gr.groupname = ? AND r.status = ?";
     @params = ($group, 3);
     my $unnuked = runSqlSingle($sql, @params);
     my $unnukedpercentage = sprintf("%.2f", ($unnuked / $total * 100));
 
-    my $groupinfo = $reset."[".$limegreen."$groupname".$reset."] [".$limegreen."",
-                    "Total".$reset.": ".$darkgrey."$total / ".$red."Nuked".",
-                    "$reset.": ".$darkgrey."$nuked ($nukedpercentage) / ".",
-                    "$limegreen."Unnuked".$reset.": ".$darkgrey."$unnuked ",
-                    "($unnukedpercentage)".$reset."] ";
+    my $groupinfo = $reset."[".$limegreen."$groupname".$reset."] ["
+        .$limegreen."Total".$reset.": ".$darkgrey."$total / ".$red."Nuked"
+        .$reset.": ".$darkgrey."$nuked ($nukedpercentage) / "
+        .$limegreen."Unnuked".$reset.": "
+        .$darkgrey."$unnuked ($unnukedpercentage)".$reset."] ";
 
     # first release
-    my $first = "SELECT r.releaseid, r.releasename, r.pretime, r.status, s.sectionname, a.genrename, i.files, i.size
-        FROM releases AS r
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN groups AS gr ON gr.groupid = r.groupid
-        WHERE r.groupid = ?
-        ORDER BY r.pretime ASC
-        LIMIT 0,1";
+    my $first = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+        s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
+        LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
+        allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i ON \
+        r.releaseid = i.releaseid LEFT JOIN sections AS s ON r.sectionid = \
+        s.sectionid LEFT JOIN groups AS gr ON gr.groupid = r.groupid WHERE \
+        r.groupid = ? ORDER BY r.pretime ASC LIMIT 0,1";
     @params = ($groupid);
     my @first = runSqlMulti($first, @params);
 
@@ -1477,12 +1449,12 @@ sub searchGroup {
     if (length($fsize) == 0) { $ffiles = ""; $fsize = ""; }
     if (length($fgenre) == 0) { $fgenre = ""; }
 
-    $first = $reset."[".$limegreen."FiRST".$reset."]::[ ".$darkgrey."$fpre "",
-             ".$reset."]::[ ".$limegreen."$fsection ".$reset."]::";
+    $first = $reset."[".$limegreen."FiRST".$reset."]::[ ".$darkgrey."$fpre"
+        .$reset."]::[ ".$limegreen."$fsection ".$reset."]::";
     my $finfo;
     if ($fsize) { 
-        $finfo = $reset."[ ".$darkgrey.$ffiles."F".$reset."/".$darkgrey.",
-        "$fsize."MB ".$reset."]::"; 
+        $finfo = $reset."[ ".$darkgrey.$ffiles."F"
+            .$reset."/".$darkgrey.$fsize."MB ".$reset."]::"; 
     }
     if ($fgenre) { 
         $fgenre = $reset."[ ".$darkgrey."$fgenre ".$reset."]::"; 
@@ -1492,26 +1464,26 @@ sub searchGroup {
     my @fdate = toDate($fpretime);
     $fpretime = $time - $fpretime;
     $fpretime = unixToHuman($fpretime);
-    $fpretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey."",
-                "$fpretime ago on $fdate[0].$fdate[1].$fdate[2] ",
-                "$fpretime_human ".$reset."]::";
+    $fpretime = $reset."[ ".$limegreen."PRETiME".$reset.": "
+        .$darkgrey."$fpretime ago on $fdate[0].$fdate[1].$fdate[2] "
+        ."$fpretime_human".$reset."]::";
 
     if ($fstatus != 1) {
         if ($fstatus == 2) {
-            $fstatus = "SELECT nukereason FROM nukes
-                WHERE releaseid = ? ORDER BY nuketime DESC LIMIT 0,1";
+            $fstatus = "SELECT nukereason FROM nukes WHERE releaseid = ? \
+                ORDER BY nuketime DESC LIMIT 0,1";
             @params = ($freleaseid);
             my $nuke = runSqlSingle($fstatus, @params);
-            $fstatus = $reset."[ ".$red."NUKED".$reset.": ".$darkgrey."$nuke ",
-                       "".$reset."]::";
+            $fstatus = $reset."[ ".$red."NUKED".$reset.": ".$darkgrey."$nuke "
+                .$reset."]::";
         }
         else {
-            $fstatus = "SELECT unnukereason FROM unnukes WHERE releaseid = ",
-                       "$freleaseid ORDER BY unnuketime DESC LIMIT 0,1";
+            $fstatus = "SELECT unnukereason FROM unnukes WHERE releaseid = ? \
+                ORDER BY unnuketime DESC LIMIT 0,1";
             @params = ($freleaseid);
             my $nuke = runSqlSingle($fstatus, @params);
-            $fstatus = $reset."[ ".$limegreen."UNNUKED".$reset.": ".",
-                       "$darkgrey."$nuke ".$reset."]::";
+            $fstatus = $reset."[ ".$limegreen."UNNUKED".$reset.": "
+                .$darkgrey."$nuke ".$reset."]::";
         }
     }
     else {
@@ -1521,17 +1493,13 @@ sub searchGroup {
     $first = $first.$finfo.$fgenre.$fstatus.$fpretime;
 
     # Last release
-    my $last = "SELECT r.releaseid, r.releasename, r.pretime, r.status, ",
-        "s.sectionname, a.genrename, i.files, i.size
-        FROM releases AS r
-        LEFT JOIN genres AS g ON r.releaseid = g.releaseid
-        LEFT JOIN allowedgenres AS a ON g.genreid = a.genreid
-        LEFT JOIN infos AS i ON r.releaseid = i.releaseid
-        LEFT JOIN sections AS s ON r.sectionid = s.sectionid
-        LEFT JOIN groups AS gr ON gr.groupid = r.groupid
-        WHERE r.groupid = ?
-        ORDER BY r.pretime DESC
-        LIMIT 0,1";
+    my $last = "SELECT r.releaseid, r.releasename, r.pretime, r.status, \
+            s.sectionname, a.genrename, i.files, i.size FROM releases AS r \
+            LEFT JOIN genres AS g ON r.releaseid = g.releaseid LEFT JOIN \
+            allowedgenres AS a ON g.genreid = a.genreid LEFT JOIN infos AS i \
+            ON r.releaseid = i.releaseid LEFT JOIN sections AS s ON \
+            r.sectionid = s.sectionid LEFT JOIN groups AS gr ON gr.groupid = \
+            r.groupid WHERE r.groupid = ? ORDER BY r.pretime DESC LIMIT 0,1";
     @params = ($groupid);
 
     my @last = runSqlMulti($last, @params);
@@ -1548,8 +1516,8 @@ sub searchGroup {
     if (length($lsize) == 0) { $lfiles = ""; $lsize = ""; }
     if (length($lgenre) == 0) { $lgenre = ""; }
 
-    $last = $reset."[".$limegreen."LAST".$reset."]::[ ".$darkgrey."$lpre ".",
-            "$reset."]::[ ".$limegreen."$lsection ".$reset."]::";
+    $last = $reset."[".$limegreen."LAST".$reset."]::[ ".$darkgrey."$lpre "
+        .$reset."]::[ ".$limegreen."$lsection ".$reset."]::";
     my $linfo;
     if ($lsize) { 
         $linfo = $reset."[ ".$darkgrey.$lfiles."F/".$lsize."MB ".$reset."]::"; 
@@ -1563,26 +1531,26 @@ sub searchGroup {
     my @ldate = toDate($lpretime);
     $lpretime = $time - $lpretime;
     $lpretime = unixToHuman($lpretime);
-    $lpretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey."",
-                "$lpretime ago on $ldate[0].$ldate[1].$ldate[2] ",
-                "$lpretime_human ".$reset."]::";
+    $lpretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey."
+        .$lpretime ago on $ldate[0].$ldate[1].$ldate[2] $lpretime_human "
+        .$reset."]::";
 
     if ($lstatus != 1) {
         if ($lstatus == 2) {
-            $lstatus = "SELECT nukereason FROM nukes
-                WHERE releaseid = ? ORDER BY nuketime DESC LIMIT 1";
+            $lstatus = "SELECT nukereason FROM nukes WHERE releaseid = ? \
+                ORDER BY nuketime DESC LIMIT 1";
             @params = ($lreleaseid);
             my $nuke = runSqlSingle($lstatus, @params);
-            $lstatus = $reset."[ ".$red."NUKED".$reset.": ".$darkgrey."",
-                       "$nuke ".$reset."]::";
+            $lstatus = $reset."[ ".$red."NUKED".$reset.": ".$darkgrey."$nuke "
+                .$reset."]::";
         }
         else {
-            $lstatus = "SELECT unnukereason FROM unnukes
-                WHERE releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
+            $lstatus = "SELECT unnukereason FROM unnukes WHERE releaseid = ? \
+                ORDER BY unnuketime DESC LIMIT 1";
             @params = ($lreleaseid);
             my $nuke = runSqlSingle($lstatus, @params);
-            $lstatus = $reset."[ ".$limegreen."UNNUKED".$reset.": ".",
-                       "$darkgrey."$nuke ".$reset."]::";
+            $lstatus = $reset."[ ".$limegreen."UNNUKED".$reset.": "
+                .$darkgrey."$nuke ".$reset."]::";
         }
     }
     else {
@@ -1591,9 +1559,9 @@ sub searchGroup {
 
     $last = $last.$linfo.$lgenre.$lstatus.$lpretime;
 
-    $sql = "SELECT s.sectionname, COUNT(r.releaseid) AS lasku FROM releases ",
-           "AS r, sections AS s WHERE r.groupid = ? AND r.sectionid = ",
-           "s.sectionid GROUP BY s.sectionname ORDER BY lasku desc LIMIT 3";
+    $sql = "SELECT s.sectionname, COUNT(r.releaseid) AS lasku FROM releases \
+        AS r, sections AS s WHERE r.groupid = ? AND r.sectionid = s.sectionid \
+        GROUP BY s.sectionname ORDER BY lasku desc LIMIT 3";
     @params = ($groupid);
 
     my @favsection = runSqlMulti($sql, @params);
@@ -1603,15 +1571,16 @@ sub searchGroup {
     my $favourites = $reset."[".$limegreen."TOP SECTiONS".$reset.": ";
     while ($x < $y) {
         if ($x == 0) {
-            $favourites = $favourites.$limegreen.$favsection[$x][0].$reset.":",
-                          "".$darkgrey."$favsection[$x][1] (" .sprintf("%.2f",
-                          "",($favsection[$x][1] / $total * 100)) . "%)".$reset;
+            $favourites = $favourites.$limegreen.$favsection[$x][0].$reset.":"
+                .$darkgrey."$favsection[$x][1] (" .
+                sprintf("%.2f",($favsection[$x][1] / $total * 100))."%)"
+                .$reset;
         }
         else {
-            $favourites = "$favourites / ".$limegreen.$favsection[$x][0].",
-                          "$reset.": ".$darkgrey."$favsection[$x][1] (" .",
-                          "sprintf("%.2f",($favsection[$x][1] / $total * 100))",
-                          ". "%)".$reset;
+            $favourites = "$favourites / ".$limegreen."$favsection[$x][0]"
+                .$reset.": ".$darkgrey."$favsection[$x][1] (" .
+                sprintf("%.2f",($favsection[$x][1] / $total * 100))."%)"
+                .$reset;
         }
         $x++;
     }
@@ -1630,11 +1599,11 @@ sub searchGroup {
 sub searchHowmany {
     my ($server, $group, $channel, $nick) = @_;
 
-    printDebug("searchHowmany()--[!howmany $group]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("searchHowmany()--[!howmany $group]--[$nick]--[$channel]"
+        ."--START--");
 
-    my $sql = "SELECT count(releaseid) FROM releases AS r INNER JOIN groups ",
-              "AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ?";
+    my $sql = "SELECT count(releaseid) FROM releases AS r INNER JOIN groups \
+        AS gr ON r.groupid = gr.groupid WHERE gr.groupname = ?";
     my @params = ($group);
     my $total = runSqlSingle($sql, @params);
 
@@ -1643,13 +1612,13 @@ sub searchHowmany {
         return 0;
     }
     else {
-        my $message = $reset."[ ".$limegreen."HOWMANY".$reset." ]".$darkgrey.",
-                      "" $total releases from $group in my db.";
+        my $message = $reset."[ ".$limegreen."HOWMANY".$reset." ]"
+            .$darkgrey." $total releases from $group in my db.";
         $server->command("MSG $channel $message");
     }
 
-    printDebug("searchHowmany()--[!howmany $group]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("searchHowmany()--[!howmany $group]--[$nick]--[$channel]"
+        ."--DONE--");
     return 0;
 }
 
@@ -1657,29 +1626,27 @@ sub searchHowmany {
 sub searchStats {
     my ($server, $statsChan, $channel, $nick) = @_;
 
-    printDebug("searchStats()--[!stats $statsChan]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("searchStats()--[!stats $statsChan]--[$nick]--[$channel]"
+        ."--START--");
 
     my $time = time();
     my $last24h = $time-(60*60*24);
 
-    my $sql = "SELECT COUNT(r.releaseid) FROM releases AS r
-        LEFT JOIN channels AS c ON c.channelid = r.channelid
-        WHERE c.channelname = ? AND r.pretime BETWEEN ? AND ?
-        LIMIT 1";
+    my $sql = "SELECT COUNT(r.releaseid) FROM releases AS r LEFT JOIN \
+        channels AS c ON c.channelid = r.channelid WHERE c.channelname = ? \
+        AND r.pretime BETWEEN ? AND ? LIMIT 1";
     my @params = ($statsChan, $last24h, $time);
     my $channelpres = runSqlSingle($sql, @params);
 
-    $sql = "SELECT COUNT(releaseid) FROM releases WHERE pretime ",
-           "BETWEEN ? AND ? LIMIT 1";
+    $sql = "SELECT COUNT(releaseid) FROM releases WHERE pretime BETWEEN ? \
+        AND ? LIMIT 1";
     @params = ($last24h, $time);
     my $allpres = runSqlSingle($sql, @params);
 
-    $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r
-        LEFT JOIN bots AS b ON b.botid = r.botid
-        LEFT JOIN channels AS c ON c.channelid = r.channelid
-        WHERE c.channelname = ? AND r.pretime BETWEEN ? AND ?
-        GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
+    $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r \
+        LEFT JOIN bots AS b ON b.botid = r.botid LEFT JOIN channels AS c ON \
+        c.channelid = r.channelid WHERE c.channelname = ? AND r.pretime \
+        BETWEEN ? AND ? GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
 
     @params = ($statsChan, $last24h, $time);
     my @Result = runSqlMulti($sql, @params);
@@ -1690,25 +1657,26 @@ sub searchStats {
 
     my $percent = sprintf("%.2f", (($channelpres/$allpres)*100));
 
-    $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS ".$reset."",
-                     "] -> ".$darkgrey."$statsChan stats for last 24h.".$reset);
-    $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS ".$reset."",
-                     "] -> ".$darkgrey."$channelpres out of $allpres releases",
-                     " were added by $statsChan ($percent%)".$reset);
+    $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS "
+        .$reset."] -> ".$darkgrey."$statsChan stats for last 24h.".$reset);
+    $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS "
+        .$reset."] -> ".$darkgrey."$channelpres out of $allpres releases were "
+        ."added by $statsChan ($percent%)".$reset);
 
     if ($channelpres > 0 ) {
-        $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS ".",
-                         "$reset."] -> ".$darkgrey."TOP5:".$reset);
+        $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS "
+            .$reset."] -> ".$darkgrey."TOP5:".$reset);
         while ($i < $k) {
-            $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS ".",
-                             "$reset."] -> ".$darkgrey."$z. $Result[$i][0] ",
-                             "with $Result[$i][1] pres".$reset);
+            $server->command("MSG $channel ".$reset."[ ".$limegreen."STATS "
+                .$reset."] -> ".$darkgrey."$z. $Result[$i][0] with "
+                ."$Result[$i][1] pres".$reset);
             $z++;
             $i++;
         }
     }
 
-    printDebug("searchStats()--[!stats $statsChan]--[$nick]--[$channel]--DONE--");
+    printDebug("searchStats()--[!stats $statsChan]--[$nick]--[$channel]"
+        ."--DONE--");
 }
 
 sub searchTop {
@@ -1719,15 +1687,14 @@ sub searchTop {
     my $time = time();
     my $last24h = $time-86400;
 
-    my $sql = "SELECT COUNT(releaseid) FROM releases WHERE pretime ",
-              "BETWEEN ? AND ? LIMIT 1;";
+    my $sql = "SELECT COUNT(releaseid) FROM releases WHERE pretime BETWEEN ? \
+        AND ? LIMIT 1;";
     my @params = ($last24h, $time);
     my $allpres = runSqlSingle($sql);
 
-    $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r
-        LEFT JOIN bots AS b ON b.botid = r.botid
-        WHERE r.pretime BETWEEN ? AND ?
-        GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
+    $sql = "SELECT b.botname, COUNT(r.releaseid) AS pres FROM releases AS r \
+        LEFT JOIN bots AS b ON b.botid = r.botid WHERE r.pretime BETWEEN ? \
+        AND ? GROUP BY b.botname ORDER BY pres DESC LIMIT 5";
 
     my @Result = runSqlMulti($sql, @params);
     my $k = @Result;
@@ -1735,12 +1702,12 @@ sub searchTop {
     my $i=0;
     my $z=1;
 
-    $server->command("MSG $channel ".$reset."[ ".$limegreen."TOP".$reset." ] ",
-                     "-> $darkgrey$allpres releases added in last 24h.".$reset);
+    $server->command("MSG $channel ".$reset."[ ".$limegreen."TOP"
+        .$reset." ] -> $darkgrey$allpres releases added in last 24h.".$reset);
     while ($i < $k) {
-        $server->command("MSG $channel ".$reset."[ ".$limegreen."TOP ".$reset",
-                         "."] -> $darkgrey$z. $Result[$i][0] with ",
-                         "$Result[$i][1] pres".$reset);
+        $server->command("MSG $channel ".$reset."[ ".$limegreen."TOP "
+            .$reset."] -> $darkgrey$z. $Result[$i][0] with $Result[$i][1] "
+            ."pres".$reset);
         $z++;
         $i++;
     }
@@ -1759,8 +1726,8 @@ sub searchUptime {
     my $time = time();
     my $irssiuptime = $time - $^T;
 
-    $irssiuptime = int($irssiuptime/3600/24)."d ".int($irssiuptime/3600%24)."",
-                   "h ".int($irssiuptime/60%60)."m ".int($irssiuptime%60)."s";
+    $irssiuptime = int($irssiuptime/3600/24)."d ".int($irssiuptime/3600%24).
+        "h ".int($irssiuptime/60%60)."m ".int($irssiuptime%60)."s";
 
     chop($uptime);
     $uptime =~ /.+ up (.+),.+[0-9]+ user/;
@@ -1770,9 +1737,9 @@ sub searchUptime {
     $uptime =~ s/:/h /;
     $uptime .= "m";
 
-    $uptime = "[ ".$limegreen."UPTiME".$reset." ]::[ ".$limegreen."BOT".",
-              "$reset.": ".$darkgrey."$irssiuptime".$reset." ]::[ ".",
-              "$limegreen."SERVER".$reset.": ".$darkgrey."$uptime".$reset." ]";
+    $uptime = "[ ".$limegreen."UPTiME".$reset." ]::[ ".$limegreen."BOT"
+        .$reset.": ".$darkgrey."$irssiuptime".$reset." ]::[ ".$limegreen
+        ."SERVER".$reset.": ".$darkgrey."$uptime".$reset." ]";
 
     $server->command("MSG $channel $uptime");
 
@@ -1790,8 +1757,8 @@ sub searchNfo {
 
     printDebug("searchNfo()--[!nfo $pre]--[$nick]--[$channel]--START--");
 
-    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON ",
-              "r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
+    my $sql = "SELECT n.releaseid FROM nfos AS n LEFT JOIN releases AS r ON \
+        r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my $releaseid = runSqlSingle($sql, @params);
 
@@ -1806,10 +1773,9 @@ sub searchNfo {
 
 
     if ($output{'triggers'}) {
-        my $message = "[ ".$limegreen."NFO".$reset." ]::[ ".$darkgrey."$pre".",
-                      "$reset." ]::[ ".$darkgrey."$shareurl$releaseid".",
-                      "$reset." ]::[".$darkgrey." You have 60 seconds".",
-                      "$reset." ]";
+        my $message = "[ ".$limegreen."NFO".$reset." ]::[ ".$darkgrey."$pre"
+            .$reset." ]::[ ".$darkgrey."$shareurl$releaseid".$reset." ]::["
+            .$darkgrey." You have 60 seconds".$reset." ]";
         $server->command("MSG $channel $message");
     }
 
@@ -1818,8 +1784,6 @@ sub searchNfo {
 }
 
 # Subroutine for !from trigger
-# Usage: !from <release>
-# [FROM] Command.And.Conquer.Red.Alert.3.Uprising-RELOADED [Added 24m 8s ago | From Whinney/#fozoo/Nukleotide]
 sub searchFrom {
     my ($server, $pre, $channel, $nick) = @_;
     my $message;
@@ -1828,16 +1792,15 @@ sub searchFrom {
     my $nuke;
 
     if (length($pre) < 8) {
-        print "pre too short!";
+        printDebug("searchFrom()--[Dirname too short!]");
         return 0;
     }
 
     printDebug("searchFrom()--[!from $pre]--[$nick]--[$channel]--START--");
 
-    my $sql = "SELECT r.releaseid, r.status, c.channelname, c.networkname, ",
-        "b.botname FROM releases AS r
-        LEFT JOIN channels AS c ON r.channelid = c.channelid
-        LEFT JOIN bots AS b ON r.botid = b.botid
+    my $sql = "SELECT r.releaseid, r.status, c.channelname, c.networkname, \
+        b.botname FROM releases AS r LEFT JOIN channels AS c ON \
+        r.channelid = c.channelid LEFT JOIN bots AS b ON r.botid = b.botid \
         WHERE r.releasename = ? LIMIT 1";
     my @params = ($pre);
     my @result = runSqlMulti($sql, @params);
@@ -1849,19 +1812,18 @@ sub searchFrom {
         my $addnet = $result[0][3];
         my $addbot = $result[0][4];
 
-        $message = $reset."[ ".$limegreen."FROM ".$reset."]::[ ".$darkgrey."",
-                   "$pre ".$reset."]::[ ".$limegreen."ADDED".$reset.": ".",
-                   "$darkgrey."$addbot/$addchannel/$addnet".$reset." ]";
+        $message = $reset."[ ".$limegreen."FROM ".$reset."]::[ "
+            .$darkgrey."$pre ".$reset."]::[ ".$limegreen."ADDED".$reset.": "
+            .$darkgrey."$addbot/$addchannel/$addnet".$reset." ]";
         $server->command("MSG $channel $message");
 
         return 0;
     }
     else {
-        $sql = "SELECT c.channelname, c.networkname, b.botname FROM delpred as d
-            LEFT JOIN channels as c ON d.channelid = c.channelid
-            LEFT JOIN bots as b ON d.botid = b.botid
-            WHERE d.releasename = ?
-            LIMIT 1";
+        $sql = "SELECT c.channelname, c.networkname, b.botname FROM delpred \
+            as d LEFT JOIN channels as c ON d.channelid = c.channelid \
+            LEFT JOIN bots as b ON d.botid = b.botid WHERE \
+            d.releasename = ? LIMIT 1";
         @result = runSqlMulti($sql, @params);
 
         if ($result[0][0]) {
@@ -1869,11 +1831,10 @@ sub searchFrom {
             my $deletechan = $result[0][0];
             my $deletenet = $result[0][1];
 
-            $sql = "SELECT c.channelname, c.networkname, b.botname FROM delpred as d
-                LEFT JOIN channels as c ON d.origchannelid = c.channelid
-                LEFT JOIN bots as b ON d.origbotid = b.botid
-                WHERE d.releasename = ?
-                LIMIT 1";
+            $sql = "SELECT c.channelname, c.networkname, b.botname FROM \
+                delpred as d LEFT JOIN channels as c ON d.origchannelid = \
+                c.channelid LEFT JOIN bots as b ON d.origbotid = b.botid \
+                WHERE d.releasename = ? LIMIT 1";
             my @origresult = runSqlMulti($sql, @params);
 
             if ($origresult[0][0]) {
@@ -1882,19 +1843,18 @@ sub searchFrom {
                 my $orignetwork = $origresult[0][1];
                 my $origbot = $origresult[0][2];
 
-                $message = $reset."[ ".$limegreen."FROM".$reset." ]::[ ".",
-                           "$darkgrey."$pre ".$reset."]::[ ".$limegreen."",
-                           "ADDED".$reset.": ".$darkgrey."$origbot/$origchan/",
-                           "$orignetwork".$reset." ]::[ ".$limegreen."DELETED",
-                           "".$reset.": ".$darkgrey."$deletebot/$deletechan/",
-                           "$deletenet".$reset." ]";
+                $message = $reset."[ ".$limegreen."FROM".$reset." ]::[ "
+                    .$darkgrey."$pre ".$reset."]::[ ".$limegreen."ADDED"
+                    .$reset.": ".$darkgrey."$origbot/$origchan/$orignetwork"
+                    .$reset." ]::[ ".$limegreen."DELETED".$reset.": "
+                    .$darkgrey."$deletebot/$deletechan/$deletenet".$reset." ]";
                 $server->command("MSG $channel $message");
             }
             else {
-                $message = $reset."[ ".$limegreen."FROM".$reset." ]::[ ".",
-                           "$darkgrey."$pre ".$reset."]::[ ".$limegreen."",
-                           "DELETED".$reset.": ".$darkgrey."$deletebot/",
-                           "$deletechan/$deletenet".$reset." ]";
+                $message = $reset."[ ".$limegreen."FROM".$reset." ]::[ "
+                    .$darkgrey."$pre ".$reset."]::[ ".$limegreen."DELETED"
+                    .$reset.": ".$darkgrey."$deletebot/$deletechan/$deletenet"
+                    .$reset." ]";
                 $server->command("MSG $channel $message");
             }
         }
@@ -1914,9 +1874,9 @@ sub searchTime {
     my $time = time2str("%T %Z", time);
     my $date = time2str("%x", time);
 
-    $server->command("MSG $channel [ ".$limegreen."TIME ".$reset."]::[ ".",
-                     "$limegreen."UNIXTIME".$reset.": ".$darkgrey."$unixtime",
-                     " ".$reset."]::[ ".$darkgrey."$date $time ".$reset."]");
+    $server->command("MSG $channel [ ".$limegreen."TIME ".$reset."]::[ "
+        .$limegreen."UNIXTIME".$reset.": ".$darkgrey."$unixtime "
+        .$reset."]::[ ".$darkgrey."$date $time ".$reset."]");
 
     printDebug("searchTime()--[!time]--[$nick]--[$channel]--DONE--");
     return 0;
@@ -1927,8 +1887,8 @@ sub searchTime {
 sub searchConvert {
     my ($server, $channel, $unixtime, $nick) = @_;
 
-    printDebug("searchConvert()--[!convert $unixtime]--[$nick]--[$channel]",
-               "--START--");
+    printDebug("searchConvert()--[!convert $unixtime]--[$nick]--[$channel]"
+        ."--START--");
 
     my $now = time();
     my $start = 1256748600;
@@ -1937,12 +1897,12 @@ sub searchConvert {
     my $date = time2str("%x", $unixtime);
     my $ago = unixToHuman($now-$unixtime);
 
-    $server->command("MSG $channel [ ".$limegreen."CONVERT".$reset." ]::[ "",
-                     ".$darkgrey."$unixtime".$reset." ]::[ ".$darkgrey."$date",
-                     "$time".$reset." ]::[ ".$darkgrey."$ago ago.".$reset." ]");
+    $server->command("MSG $channel [ ".$limegreen."CONVERT".$reset." ]::[ "
+        .$darkgrey."$unixtime".$reset." ]::[ ".$darkgrey."$date$time"
+        .$reset." ]::[ ".$darkgrey."$ago ago.".$reset." ]");
 
-    printDebug("searchConvert()--[!convert $unixtime]--[$nick]--[$channel]",
-               "--DONE--");
+    printDebug("searchConvert()--[!convert $unixtime]--[$nick]--[$channel]"
+        ."--DONE--");
 }
 
 # Simple subroutine to return idletime for specified network
@@ -1995,8 +1955,8 @@ sub getNfoChannel {
 
     my $channelright = 't|u'; # !getnfo ja !oldnfo
 
-        my $sql = "SELECT channelname FROM channels WHERE networkshort = ? ",
-                  "AND (channelrights LIKE ? OR channelrights = 'a') LIMIT 1";
+        my $sql = "SELECT channelname FROM channels WHERE networkshort = ? \
+            AND (channelrights LIKE ? OR channelrights = 'a') LIMIT 1";
     my @params = ($networkShort, "%$channelright%");
 
     my $nfoChannel = runSqlSingle($sql, @params);
@@ -2017,8 +1977,8 @@ sub getChannels {
 
     sqlConnect();
 
-    my $sql = "SELECT channelid, channelname, channelrights, networkshort, ",
-              "networkname FROM channels WHERE 1 = ? ORDER BY priority ASC";
+    my $sql = "SELECT channelid, channelname, channelrights, networkshort, \
+        networkname FROM channels WHERE 1 = ? ORDER BY priority ASC";
     my @params = (1);
 
     my @result = runSqlMulti($sql, @params);
@@ -2042,8 +2002,8 @@ sub getChannels {
 
         foreach (@allFlags) {
 
-            printDebug("getChannels()--[Network: $network]--[Channel: ",
-                       "$channel]--[Flag: $_]");
+            printDebug("getChannels()--[Network: $network]--[Channel: "
+                ."$channel]--[Flag: $_]");
 
             if ($_ eq 'l') { 
                 push(@search_channels, $channel); 
@@ -2053,20 +2013,48 @@ sub getChannels {
                 push(@pre_channels, $channel); 
                 push(@pre_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 'b') { push(@addpre_channels, $channel); }
-            if ($_ eq 'g') { push(@addpre_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'c') { push(@info_channels, $channel); }
-            if ($_ eq 'h') { push(@info_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'c') { push(@gn_channels, $channel); }
-            if ($_ eq 'w') { push(@gn_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'f') { push(@delpre_channels, $channel); }
-            if ($_ eq 'j') { push(@delpre_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'e') { push(@addold_channels, $channel); }
-            if ($_ eq 'k') { push(@addold_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'd') { push(@nuke_channels, $channel); }
-            if ($_ eq 'i') { push(@nuke_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'd') { push(@unnuke_channels, $channel); }
-            if ($_ eq 'x') { push(@unnuke_channels_echo, $channelWithNetwork); }
+            if ($_ eq 'b') { 
+                push(@addpre_channels, $channel); 
+            }
+            if ($_ eq 'g') { 
+                push(@addpre_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'c') { 
+                push(@info_channels, $channel); 
+            }
+            if ($_ eq 'h') { 
+                push(@info_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'c') { 
+                push(@gn_channels, $channel); 
+            }
+            if ($_ eq 'w') { 
+                push(@gn_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'f') { 
+                push(@delpre_channels, $channel); 
+            }
+            if ($_ eq 'j') { 
+                push(@delpre_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'e') { 
+                push(@addold_channels, $channel); 
+            }
+            if ($_ eq 'k') { 
+                push(@addold_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'd') { 
+                push(@nuke_channels, $channel); 
+            }
+            if ($_ eq 'i') { 
+                push(@nuke_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'd') { 
+                push(@unnuke_channels, $channel); 
+            }
+            if ($_ eq 'x') { 
+                push(@unnuke_channels_echo, $channelWithNetwork); 
+            }
             if ($_ eq 'm') { 
                 push(@play_channels, $channel); 
                 push(@play_channels_echo, $channelWithNetwork); 
@@ -2075,7 +2063,9 @@ sub getChannels {
                 push(@getold_channels, $channel); 
                 push(@getold_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 'q') { push(@sitepre_channels, $channel); }
+            if ($_ eq 'q') { 
+                push(@sitepre_channels, $channel); 
+            }
             if ($_ eq 'r') { 
                 push(@sitepre_channels_echo, $channelWithNetwork); 
             }
@@ -2087,12 +2077,24 @@ sub getChannels {
                 push(@nukenet_search_channels, $channel); 
                 push(@nukenet_search_channels_echo, $channelWithNetwork); 
             }
-            if ($_ eq 's') { push(@addnfo_channels, $channel); }
-            if ($_ eq 't') { push(@addnfo_channels_echo, $channelWithNetwork); }
-            if ($_ eq 'y') { push(@ginfo_channels, $channel); }
-            if ($_ eq 't') { push(@ginfo_channels_echo, $channelWithNetwork); }
-            if ($_ == 1) { push(@addurl_channels, $channel); }
-            if ($_ == 2) { push(@addurl_channels_echo, $channelWithNetwork); }
+            if ($_ eq 's') { 
+                push(@addnfo_channels, $channel); 
+            }
+            if ($_ eq 't') { 
+                push(@addnfo_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ eq 'y') { 
+                push(@ginfo_channels, $channel); 
+            }
+            if ($_ eq 't') { 
+                push(@ginfo_channels_echo, $channelWithNetwork); 
+            }
+            if ($_ == 1) { 
+                push(@addurl_channels, $channel); 
+            }
+            if ($_ == 2) { 
+                push(@addurl_channels_echo, $channelWithNetwork); 
+            }
         }
         $i++;
     }
