@@ -526,8 +526,8 @@ sub savePre {
     my $releaseId = getReleaseId($pre);
     my $channelId = getChannelId($channel);
 
-    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid, ",
-              "channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid, \
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
     my @params = ($pre, $pretime, $groupId, $sectionId, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
@@ -620,8 +620,8 @@ sub saveInfo {
 
     my $channelId = getChannelId($channel);
 
-    my $sql = "INSERT INTO infos(releaseid, files, size, channelid, botid) ",
-              "VALUES (?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO infos(releaseid, files, size, channelid, botid) \
+            VALUES (?, ?, ?, ?, ?)";
     my @params = ($releaseId, $files, $size, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
@@ -702,8 +702,8 @@ sub saveGinfo {
         $result = runSqlSave($sql, @params);
     }
     else {
-        my $sql = "INSERT INTO infos(releaseid, files, size, channelid, ",
-                  "botid) VALUES (?, ?, ?, ?, ?)";
+        my $sql = "INSERT INTO infos(releaseid, files, size, channelid, \
+                botid) VALUES (?, ?, ?, ?, ?)";
         my @params = ($releaseId, $files, $size, $channelId, $botId);
         $result = runSqlSave($sql, @params);
     }
@@ -787,8 +787,8 @@ sub saveSitepre {
         announcePre($server, $message);
     }
 
-    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid,",
-              "channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid,\
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
     my @params = ($pre, $pretime, $groupId, $sectionId, $channelId, $botId);
 
     $addresult = runSqlSave($sql, @params);
@@ -840,8 +840,8 @@ sub saveSitepre {
         $size = $temp;
     }
 
-    $sql = "INSERT INTO infos(releaseid, files, size, botid, channelid) ",
-           "VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO infos(releaseid, files, size, botid, channelid) \
+        VALUES (?, ?, ?, ?, ?)";
     @params = ($releaseId, $files, $size, $botId, $channelId);
     my $infoResult = runSqlSave($sql, @params);
     if (!$infoResult) {
@@ -978,8 +978,8 @@ sub saveGenre {
         return 0;
     }
 
-    my $sql = "INSERT INTO genres(releaseid, genreid, genretime, channelid, ",
-              "botid) VALUES (?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO genres(releaseid, genreid, genretime, channelid, \
+            botid) VALUES (?, ?, ?, ?, ?)";
     my @params = ($releaseId, $genreId, $genretime, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
@@ -1086,8 +1086,8 @@ sub saveNuke {
 
     my $releaseid = getReleaseId($pre);
 
-    my $sql = "INSERT INTO nukes(releaseid, nukereason, nukenetid, nuketime",
-              ", channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO nukes(releaseid, nukereason, nukenetid, nuketime, \
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
     my @params = ($releaseid, $reason, $nukenetid, $nuketime, $channelid, 
                   $botid);
 
@@ -1211,8 +1211,8 @@ sub saveUnnuke {
         return 0;
     }
 
-    my $sql = "INSERT INTO unnukes(releaseid, unnukereason, nukenetid, ",
-              "unnuketime, channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO unnukes(releaseid, unnukereason, nukenetid, \
+            unnuketime, channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
     my @params = ($releaseId, $reason, $nukenetId, $unnuketime, $channelId, 
                   $botId);
 
@@ -1465,10 +1465,10 @@ sub saveOldDelpre {
                    $deletereason, $delpretime, $nfo, $nfoname);
     }
 
-    $sql = "INSERT INTO delpred(releasename, section, pretime, files, size, ",
-           "genre, nukereason, nukenetid, channelid, botid, origchannelid, ",
-           "origbotid, deletereason, deletetime, nfo, nfoname) VALUES ",
-           "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO delpred(releasename, section, pretime, files, size, \
+        genre, nukereason, nukenetid, channelid, botid, origchannelid, \
+        origbotid, deletereason, deletetime, nfo, nfoname) VALUES (?, ?, ?, \
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     my $result = runSqlSave($sql, @params);
 
     if (!$result) {
@@ -1617,10 +1617,10 @@ sub saveDelpre {
                    $deletereason, $delpretime, $nfo, $nfoname);
     }
 
-    $sql = "INSERT INTO delpred(releasename, section, pretime, files, size, ",
-           "genre, nukereason, nukenetid, channelid, botid, origchannelid, ",
-           "origbotid, deletereason, deletetime, nfo, nfoname) VALUES ",
-           "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO delpred(releasename, section, pretime, files, size, \
+        genre, nukereason, nukenetid, channelid, botid, origchannelid, \
+        origbotid, deletereason, deletetime, nfo, nfoname) VALUES (?, ?, ?, \
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     my $result = runSqlSave($sql, @params);
 
     if (!$result) {
@@ -1759,15 +1759,15 @@ sub saveUndelpre {
         my $hash = md5_hex($pre);
         my $channelId = getChannelId($channel);
 
-        my $sql = "INSERT INTO nfos(releaseid, hash, nfo, nfoname, time, ",
-                  "channelid, botid) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        my $sql = "INSERT INTO nfos(releaseid, hash, nfo, nfoname, time, \
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?, ?)";
         my @params = ($releaseId, $hash, $nfo, $nfoname, $undelpretime, 
                       $channelId, $botId);
 
         if (!runSqlSave($sql, @params)) {
-            my $msg = "[".$red."ERROR".$reset."] ".$darkgrey."saveUndelpre()",
-                      "--[Unable to resave nfo]--[!undelpre $pre $reason ",
-                      "$nukenet]--[$nick]--[$channel]";
+            my $msg = "[".$red."ERROR".$reset."] ".$darkgrey."saveUndelpre()"
+                ."--[Unable to resave nfo]--[!undelpre $pre $reason "
+                ."$nukenet]--[$nick]--[$channel]";
             announceError($server, $msg);
             printDebug("saveUndelpre()--[Unable to resave nfo]--[!undelpre "
                 ."$pre $reason $nukenet]--[$nick]--[$channel]");
@@ -1905,8 +1905,8 @@ sub saveAddold {
         return 0;
     }
 
-    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid,",
-              "channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid, \
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
     my @params = ($pre, $pretime, $groupId, $sectionId, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
@@ -2073,8 +2073,8 @@ sub saveNfo {
     my $nfodata = join('',@data);
     $nfodata = encode_base64($nfodata);
 
-    my $sql = "INSERT INTO nfos(releaseid, hash, nfo, nfoname, time, ",
-              "channelid, botid) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO nfos(releaseid, hash, nfo, nfoname, time, \
+            channelid, botid) VALUES (?, ?, ?, ?, ?, ?, ?)";
     my @params = ($releaseId, $hash, $nfodata, $nfoname, $time, $channelId, 
                   $botId);
 
@@ -2288,8 +2288,8 @@ sub saveUrl {
         return 0;
     }
 
-    my $sql = "INSERT INTO urls(releaseid, url, urltime, channelid, botid) ";
-              "VALUES (?, ?, ?, ?, ?)";
+    my $sql = "INSERT INTO urls(releaseid, url, urltime, channelid, botid) \
+            VALUES (?, ?, ?, ?, ?)";
     my @params = ($releaseId, $url, $urltime, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
