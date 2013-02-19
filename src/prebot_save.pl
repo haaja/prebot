@@ -165,29 +165,29 @@ our %limits = (
 
 our $blockednfo = "imdb.nfo|autotrader.nfo|scc.nfo|hqscene.nfo|unknown.nfo";
 
-our $valid_sections = "XVID|XXX|MP3|AUDIOBOOK|X264|DVDR|BLURAY|TV|0DAY|APPS",
-                      "|ANIME|MVID|EBOOK|IMGSET|MDVDR|X360|XBOX|PS3|PS2|PSP|",
-                      "NDS|GBA|WII|GAMES|DOX|SUBPACK|COVERS|SVCD|VCD|VC1|PDA|",
-                      "NGC|DIVX|NOTICE|BDR|TV-X264|TV-XVID|TV-DVDR|DC|MBLURAY";
+our $valid_sections = "XVID|XXX|MP3|AUDIOBOOK|X264|DVDR|BLURAY|TV|0DAY|APPS"
+        ."|ANIME|MVID|EBOOK|IMGSET|MDVDR|X360|XBOX|PS3|PS2|PSP|NDS|GBA|WII|"
+        ."GAMES|DOX|SUBPACK|COVERS|SVCD|VCD|VC1|PDA|NGC|DIVX|NOTICE|BDR|"
+        ."TV-X264|TV-XVID|TV-DVDR|DC|MBLURAY";
 
 our $gamegroups	= "RELOADED|Razor1911|DEViANCE|FLT|HATRED|ViTALiTY";
-our $porngroups	= "Pr0nStars|DivxFactory|swe6rus|pornolation|xcite|nympho|",
-                  "imnaked|tesoro";
-our $problemgroups = "VH-PROD|get.proper|S.W.A.T|HELLS.ANGELS|EnDoR.Internal|",
-                     "T.E.D|XPERT_HD|XPERT.Internal";
+our $porngroups	= "Pr0nStars|DivxFactory|swe6rus|pornolation|xcite|nympho|"
+        ."imnaked|tesoro";
+our $problemgroups = "VH-PROD|get.proper|S.W.A.T|HELLS.ANGELS|EnDoR.Internal|"
+        ."T.E.D|XPERT_HD|XPERT.Internal";
 
 # Variables used in skiplist
 our $allowedchars = "^[a-zA-Z0-9\_\.\(\)\&\-]*\$";
 our $allowed_nukechars = "^[a-zA-Z0-9\_\.\(\)\-]*\$";
 
-our $allowed = "GREATEST|TESTEES|SWEETEST|ActualTests|TESTAMENT|FLATTEST|",
-               "CONTEST|HOTTEST";
-our $filter = "SPAM|TEST|T3ST|DONT.TRADE|NO.TRADE|SPAM|Sorry.|TESTING|P2P|",
-              "REQ\-|FILLED\-|no\-nfo|no\-sfv";
-our $p2p_groups = "DEViSE|KingBen|aXXo|EOSiNT|AJP|AXIAL|CtrlHD|DNR|EOS|ESiR|",
-                  "Funner|GHEYLARD|G0LDz|HDB|HDC|HDV|HDxT|HDmonSK|iAPULA|iLL|",
-                  "iRO|M14CH0|M794|McFly|MMI|PerfectionHD|PoTuS|STG|TDM|THS|",
-                  "TFE|THORA|tK|TriggeR|XSHD|Stuffies|FpTV";
+our $allowed = "GREATEST|TESTEES|SWEETEST|ActualTests|TESTAMENT|FLATTEST|"
+        ."CONTEST|HOTTEST";
+our $filter = "SPAM|TEST|T3ST|DONT.TRADE|NO.TRADE|SPAM|Sorry.|TESTING|P2P|"
+        ."REQ\-|FILLED\-|no\-nfo|no\-sfv";
+our $p2p_groups = "DEViSE|KingBen|aXXo|EOSiNT|AJP|AXIAL|CtrlHD|DNR|EOS|ESiR|"
+        ."Funner|GHEYLARD|G0LDz|HDB|HDC|HDV|HDxT|HDmonSK|iAPULA|iLL|iRO|"
+        ."M14CH0|M794|McFly|MMI|PerfectionHD|PoTuS|STG|TDM|THS|TFE|THORA|tK|"
+        ."TriggeR|XSHD|Stuffies|FpTV";
 
 our $allowedUrls = "tvrage|epguide|imdb";
 
