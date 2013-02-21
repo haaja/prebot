@@ -34,6 +34,9 @@ Expected database schema can be found in db_schema.txt file. A word of i
 caution as the size of the database will grow rather large once you have 
 enough files stored in it.
 
+Scripts assume that you will manually enter allowed genres to allowedgenres
+table and allowd sections to sections table.
+
 ## INSTALLATION
 
 Please read about section again. Repeat if necessary.
