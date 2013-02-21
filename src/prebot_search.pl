@@ -506,23 +506,28 @@ sub searchPre {
                 # Special langs rule which filters foreign releases
                 if ($i eq "langs") {
                     $filter = $filter . "AND r.releasename NOT LIKE '%german%' \
-                        AND r.releasename NOT LIKE '%french%' AND \
-                        r.releasename NOT LIKE '%italian%' AND r.releasename \
-                        NOT LIKE '%swedish%' AND r.releasename NOT LIKE \
-                        '%flemish%' AND r.releasename NOT LIKE '%dutch%' AND \
-                        r.releasename NOT LIKE '%.kr.%' AND r.releasename NOT \
-                        LIKE '%.cz-%' AND r.releasename NOT LIKE '%.cz.%' AND \
-                        r.releasename NOT LIKE '%.nl.%' AND r.releasename NOT \
-                        LIKE '%.pl.%' AND r.releasename NOT LIKE '%.hun.%' \
-                        AND r.releasename NOT LIKE '%.hun-%' AND r.releasename \
-                        NOT LIKE '%.es-%' AND r.releasename NOT LIKE \
-                        '%hungarian%' AND r.releasename NOT LIKE '%spanish%' \
-                        AND r.releasename NOT LIKE '%greek%' AND r.releasename \
-                        NOT LIKE '%BRAZiLiAN%' AND r.releasename NOT LIKE \
-                        '%TRUEFRENCH%' AND r.releasename NOT LIKE \
-                        '%NORWEGIAN%' AND r.releasename NOT LIKE '%.PT.%' AND \
-                        r.releasename NOT LIKE '%CUSTOM.%.SUBS%' AND \
-                        r.releasename NOT LIKE '%finnish%' ";
+                        AND r.releasename NOT LIKE '%french%' 
+                        AND r.releasename NOT LIKE '%italian%' \
+                        AND r.releasename NOT LIKE '%swedish%' \
+                        AND r.releasename NOT LIKE '%flemish%' \
+                        AND r.releasename NOT LIKE '%dutch%' \
+                        AND r.releasename NOT LIKE '%.kr.%' \
+                        AND r.releasename NOT LIKE '%.cz-%' \
+                        AND r.releasename NOT LIKE '%.cz.%' \
+                        AND r.releasename NOT LIKE '%.nl.%' \
+                        AND r.releasename NOT LIKE '%.pl.%' \
+                        AND r.releasename NOT LIKE '%.hun.%' \
+                        AND r.releasename NOT LIKE '%.hun-%' \
+                        AND r.releasename NOT LIKE '%.es-%' \
+                        AND r.releasename NOT LIKE '%hungarian%' \
+                        AND r.releasename NOT LIKE '%spanish%' \
+                        AND r.releasename NOT LIKE '%greek%' \
+                        AND r.releasename NOT LIKE '%BRAZiLiAN%' \
+                        AND r.releasename NOT LIKE '%TRUEFRENCH%' \
+                        AND r.releasename NOT LIKE '%NORWEGIAN%' \
+                        AND r.releasename NOT LIKE '%.PT.%' \
+                        AND r.releasename NOT LIKE '%CUSTOM.%.SUBS%' \
+                        AND r.releasename NOT LIKE '%finnish%' ";
                 }
                 else {
                     $filter = $filter . "AND r.releasename NOT LIKE ? ";
@@ -657,14 +662,14 @@ sub searchPre {
 
     if ($status != 1) {
         if ($status == 2) {
-            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? ORDER \
-                BY nuketime DESC LIMIT 1";
+            $sql = "SELECT nukereason FROM nukes WHERE releaseid = ? \
+                ORDER BY nuketime DESC LIMIT 1";
             @params = ($releaseid);
             $nukereason = $reset."[ ".$red."NUKED:".$reset." ";
         }
         else {
-            $sql = "SELECT unnukereason, nukenetid FROM unnukes WHERE \
-                releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
+            $sql = "SELECT unnukereason, nukenetid FROM unnukes \
+                WHERE releaseid = ? ORDER BY unnuketime DESC LIMIT 1";
             @params = ($releaseid);
             $nukereason = $reset."[ ".$limegreen."UNNUKED".$reset.": ";
         }
@@ -684,8 +689,8 @@ sub searchPre {
     if ($url) { 
         $url = $reset."[ ".$darkgrey.$url.$reset." ]::"; 
     }
-    $pretime = $reset."[ ".$darkgrey."PRETIME: $ago ago on $date[0].$date[1]
-        .$date[2] ".$pretime_human.$reset." ]::";
+    $pretime = $reset."[ ".$darkgrey."PRETIME: $ago ago on "
+        ."$date[0].$date[1].$date[2] ".$pretime_human.$reset." ]::";
 
     $message = $message.$pretime.$infos.$genre.$nukereason.$url.$nfo;
 
@@ -772,25 +777,30 @@ sub searchDupe {
 
             foreach my $i (@not_temp) {
                 if ($i eq "langs") {
-                    $not = $not . "AND r.releasename NOT LIKE '%german%' AND \
-                        r.releasename NOT LIKE '%french%' AND r.releasename \
-                        NOT LIKE '%italian%' AND r.releasename NOT LIKE 
-                        '%swedish%' AND r.releasename NOT LIKE '%flemish%' \
-                        AND r.releasename NOT LIKE '%dutch%' AND r.releasename \
-                        NOT LIKE '%.kr.%' AND r.releasename NOT LIKE '%.cz-%' \
-                        AND r.releasename NOT LIKE '%.cz.%' AND r.releasename \
-                        NOT LIKE '%.nl.%' AND r.releasename NOT LIKE '%.pl.%' \
-                        AND r.releasename NOT LIKE '%.hun.%' AND \
-                        r.releasename NOT LIKE '%.hun-%' AND r.releasename \
-                        NOT LIKE '%.es-%' AND r.releasename NOT LIKE \
-                        '%hungarian%' AND r.releasename NOT LIKE '%spanish%' \
-                        AND r.releasename NOT LIKE '%greek%' AND \
-                        r.releasename NOT LIKE '%BRAZiLiAN%' AND r.releasename \
-                        NOT LIKE '%TRUEFRENCH%' AND r.releasename NOT LIKE \
-                        '%NORWEGIAN%' AND r.releasename NOT LIKE '%.PT.%' AND \
-                        r.releasename NOT LIKE '%CUSTOM.%.SUBS%' AND \
-                        r.releasename NOT LIKE '%DANISH%' AND r.releasename \
-                        NOT LIKE '%finnish%' ";
+                    $not = $not . "AND r.releasename NOT LIKE '%german%' \
+                        AND r.releasename NOT LIKE '%french%' \
+                        AND r.releasename NOT LIKE '%italian%' \
+                        AND r.releasename NOT LIKE '%swedish%' \
+                        AND r.releasename NOT LIKE '%flemish%' \
+                        AND r.releasename NOT LIKE '%dutch%' \
+                        AND r.releasename NOT LIKE '%.kr.%' \
+                        AND r.releasename NOT LIKE '%.cz-%' \
+                        AND r.releasename NOT LIKE '%.cz.%' \
+                        AND r.releasename NOT LIKE '%.nl.%' \
+                        AND r.releasename NOT LIKE '%.pl.%' \
+                        AND r.releasename NOT LIKE '%.hun.%' \
+                        AND r.releasename NOT LIKE '%.hun-%' \
+                        AND r.releasename NOT LIKE '%.es-%' \
+                        AND r.releasename NOT LIKE '%hungarian%' \
+                        AND r.releasename NOT LIKE '%spanish%' \
+                        AND r.releasename NOT LIKE '%greek%' \
+                        AND r.releasename NOT LIKE '%BRAZiLiAN%' \
+                        AND r.releasename NOT LIKE '%TRUEFRENCH%' \
+                        AND r.releasename NOT LIKE '%NORWEGIAN%' \
+                        AND r.releasename NOT LIKE '%.PT.%' \
+                        AND r.releasename NOT LIKE '%CUSTOM.%.SUBS%' \
+                        AND r.releasename NOT LIKE '%DANISH%' \
+                        AND r.releasename NOT LIKE '%finnish%' ";
                 }
                 else {
                     $not = $not . "AND r.releasename NOT LIKE '%$i%' ";
