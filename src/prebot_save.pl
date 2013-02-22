@@ -1926,7 +1926,7 @@ sub saveAddold {
         saveNuke("$pre $nuke $nukenet", $server, $channel, $nick, 1); 
     }
 
-    #echoAddold($server, $text);
+    echoAddold($server, $text);
     announceAddold($server, "$pre $section");
 
     $last{'addold'} = $pre;
@@ -2234,6 +2234,9 @@ sub saveUrl {
     my ($pre, $url) = split(" ", $text, 2);
     my $urltime = time();
 
+    if ($last{'url'} eq $pre) {
+        return 0;
+    }
 
     $pre = trim($pre);
     $url = stripBadCharsUrl(trim($url));
