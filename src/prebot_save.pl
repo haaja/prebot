@@ -1832,19 +1832,6 @@ sub saveAddold {
 
     my $exists = checkIfPreExists($pre);
     if ($exists == 1) {
-        if ($nick eq "ZickZack") {
-            my $sql = "SELECT pretime FROM releases WHERE releasename = ? \
-                    LIMIT 1";
-            my @params = ($pre);
-
-            my $time = runSqlSingle($sql, @params);
-
-            if ($pretime < $time) {
-                saveUpdatetime("$pre $pretime", $server, $channel, $nick);
-                $last{'addold'} = $pre;
-            }
-        }
-
         if (!checkIfInfoExists($pre)) {
             if (isNumeric($files)) {
                 saveInfo("$pre $files $size", $server, $channel, $nick);
@@ -2246,6 +2233,7 @@ sub saveUrl {
     my ($text, $server, $channel, $nick) = @_;
     my ($pre, $url) = split(" ", $text, 2);
     my $urltime = time();
+
 
     $pre = trim($pre);
     $url = stripBadCharsUrl(trim($url));
