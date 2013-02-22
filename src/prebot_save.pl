@@ -2294,6 +2294,7 @@ sub saveUrl {
     }
 
     $last{'url'} = $pre;
+    echoUrl($server, $pre, $url);
     printDebug("saveUrl()--[!addurl $pre $url]--[$nick]--[$channel]--DONE--");
 
     return 0;
