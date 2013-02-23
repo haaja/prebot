@@ -1562,8 +1562,8 @@ sub searchGroup {
     $lpretime = $time - $lpretime;
     $lpretime = unixToHuman($lpretime);
     $lpretime = $reset."[ ".$limegreen."PRETiME".$reset.": ".$darkgrey."
-        .$lpretime ago on $ldate[0].$ldate[1].$ldate[2] $lpretime_human "
-        .$reset."]::";
+        ."$lpretime ago on $ldate[0].$ldate[1].$ldate[2] $lpretime_human "
+        ."$reset."]::";
 
     if ($lstatus != 1) {
         if ($lstatus == 2) {
