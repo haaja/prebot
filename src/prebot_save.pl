@@ -517,9 +517,7 @@ sub savePre {
 
     if (!$noecho) {
         my $message = "!addpre $pre $section";
-        if ($output{'echo'}) {
-            echoPre($server, $message);
-        }
+        echoPre($server, $message);
     }
 
     my $sectionId = getSectionId($section);
@@ -537,10 +535,8 @@ sub savePre {
         return 0;
     }
 
-    if ($output{'announcePre'}) {
-        my $message = "$pre $section";
-        announcePre($server, $message);
-    }
+    my $message = "$pre $section";
+    announcePre($server, $message);
     $last{'pre'} = $pre;
 
     fetchDataFromNet($pre, $server);
@@ -782,10 +778,8 @@ sub saveSitepre {
         return 0;
     }
 
-    if ($output{'announcePre'}) {
-        my $message = "$pre $section";
-        announcePre($server, $message);
-    }
+    my $message = "$pre $section";
+    announcePre($server, $message);
 
     my $sql = "INSERT INTO releases(releasename, pretime, groupid, sectionid,\
             channelid, botid) VALUES (?, ?, ?, ?, ?, ?)";
@@ -1915,6 +1909,7 @@ sub saveAddold {
     if ($last{'addold'} eq $pre) {
         return 0;
     }
+
     echoAddold($server, $text);
     announceAddold($server, "$pre $section");
 
