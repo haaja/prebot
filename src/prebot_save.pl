@@ -1912,6 +1912,9 @@ sub saveAddold {
         saveNuke("$pre $nuke $nukenet", $server, $channel, $nick, 1); 
     }
 
+    if ($last{'addold'} eq $pre) {
+        return 0;
+    }
     echoAddold($server, $text);
     announceAddold($server, "$pre $section");
 
