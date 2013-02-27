@@ -1549,11 +1549,6 @@ sub saveDelpre {
         return 0;
     }
 
-    if (!$nukenet && $channel eq "#botadmin") {
-        $nukenet = "OldDB";
-        $noecho = 1;
-    }
-
     my $nukenetid = checkNukenet($nukenet, "delpre");
     if ($nukenetid == 0) {
         my $msg = "[".$red."ERROR".$reset."] ".$darkgrey."saveDelpre()--[",
