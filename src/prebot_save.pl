@@ -1965,21 +1965,6 @@ sub saveNfo {
     }
 
     if (checkIfNfoExists($pre)) {
-        my $sql = "SELECT n.nfo FROM nfos AS n LEFT JOIN releases AS r ON \
-                r.releaseid = n.releaseid WHERE r.releasename = ? LIMIT 1";
-        my @params = ($pre);
-
-        my $nfo = runSqlSingle($sql, @params);
-
-        my $crc = crc32(decode_base64($nfo));
-        $crc = uc(sprintf("%08x", $crc));
-
-        if ($checksum && ($checksum ne $crc) && ($nick eq "ZickZack")) {
-            saveUpdatenfo($pre, $nfoname, $hash, $nfo2, $url2, $server, 
-                          $channel, $nick);
-            undef($checksum);
-        }
-
         return 0;
     }
 
