@@ -1971,7 +1971,6 @@ sub saveNfo {
     printDebug("saveNfo()--[!addnfo $pre $url $nfoname]--[$nick]--[$channel]"
         ."--START--");
 
-    # jos tiedostopääte != .nfo
     my @suffix = split(/\./, $nfoname);
     if ($suffix[-1] !~ /^nfo$/i) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()",
@@ -1996,8 +1995,8 @@ sub saveNfo {
     my $releaseId = getReleaseId($pre);
     my $channelId = getChannelId($channel);
 
-    my $command = "wget -q -T 1 -t 1 --no-check-certificate ",
-                  "--content-disposition -O $nfo2 $url2";
+    my $command = "wget -q -T 1 -t 1 --no-check-certificate "
+            ."--content-disposition -O $nfo2 $url2";
     system($command);
     rename("$nfoname", "$hash");
 
