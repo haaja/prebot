@@ -1968,7 +1968,7 @@ sub saveNfo {
     my $botId = checkBot($nick, "nfo");
     if (!$botId) {
         printDebug("saveNfo()--[Bot $bot does not have nfo saving rights]--["
-            ."!addnfo $pre $url $nfoname $checksum]--[$nick]--[$channel]"
+            ."!addnfo $pre $url $nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2025,7 +2025,7 @@ sub saveNfo {
     if ($filesize < 40 || $filesize > 512000 ) {
         unlink("$hash");
         printDebug("saveNfo()--[Invalid filesize]--[!addnfo $pre $url $nfoname"
-            ." $checksum]--[$nick]--[$channel]"
+            ." $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
