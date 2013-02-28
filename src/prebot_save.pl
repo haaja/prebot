@@ -1930,11 +1930,27 @@ sub saveNfo {
     $url = trim($url);
     $nfoname = trim($nfoname);
 
-    if (length($checksum) != 8 && $pre eq $last{'nfo'}) {
+    if ($pre eq $last{'nfo'}) {
+        return 0;
+    }
+
+    if (length($checksum) != 8) {
+        my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[CRC ",
+                      "length is not 8 chars]--[!addnfo $pre $url $nfoname ]",
+                      "--[$nick]--[$channel]";
+        announceError($server, $message);
+        printDebug("saveNfo()--[CRC length != 8]--[!addnfo $pre $url "
+            ."$nfoname ]--[$nick]--[$channel]");
         return 0;
     }
 
     if (length($nfoname) > $limits{'nfonameLength'}) {
+        my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[Nfo ",
+                      "file name too long]--[!addnfo $pre $url $nfoname ]",
+                      "--[$nick]--[$channel]";
+        announceError($server, $message);
+        printDebug("saveNfo()--[Filename too long]--[!addnfo $pre $url "
+            ."$nfoname ]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1951,6 +1967,8 @@ sub saveNfo {
 
     my $botId = checkBot($nick, "nfo");
     if (!$botId) {
+        printDebug("saveNfo()--[Bot $bot does not have nfo saving rights]--["
+            ."!addnfo $pre $url $nfoname $checksum]--[$nick]--[$channel]"
         return 0;
     }
 
@@ -1965,6 +1983,8 @@ sub saveNfo {
     }
 
     if (checkIfNfoExists($pre)) {
+        printDebug("saveNfo()--[Nfo already exists]--[!addnfo $pre $url "
+            ."$nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2004,6 +2024,8 @@ sub saveNfo {
 
     if ($filesize < 40 || $filesize > 512000 ) {
         unlink("$hash");
+        printDebug("saveNfo()--[Invalid filesize]--[!addnfo $pre $url $nfoname"
+            ." $checksum]--[$nick]--[$channel]"
         return 0;
     }
 
