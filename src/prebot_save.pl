@@ -1936,11 +1936,11 @@ sub saveNfo {
 
     if (length($checksum) != 8) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[CRC ",
-                      "length is not 8 chars]--[!addnfo $pre $url $nfoname ]",
-                      "--[$nick]--[$channel]";
+                      "length is not 8 chars]--[!addnfo $pre $url $nfoname "
+                      "$checksum]--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[CRC length != 8]--[!addnfo $pre $url "
-            ."$nfoname ]--[$nick]--[$channel]");
+            ."$nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1950,7 +1950,7 @@ sub saveNfo {
                       "--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[Filename too long]--[!addnfo $pre $url "
-            ."$nfoname ]--[$nick]--[$channel]");
+            ."$nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1974,11 +1974,11 @@ sub saveNfo {
 
     if (checkIfPreExists($pre) != 1) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[No ",
-                      "such pre in db]--[!addnfo $pre $url $nfoname ]",
+                      "such pre in db]--[!addnfo $pre $url $nfoname $checksum]",
                       "--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[No such pre in db]--[!addnfo $pre $url "
-            ."$nfoname ]--[$nick]--[$channel]");
+            ."$nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -1998,7 +1998,7 @@ sub saveNfo {
                       "--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[Suffix is not .nfo]--[!addnfo $pre $url "
-            ."$nfoname]--[$nick]--[$channel]");
+            ."$nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
 
@@ -2008,7 +2008,7 @@ sub saveNfo {
                       "$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[Blocked filename]--[!addnfo $pre $url "
-            ."$nfoname]--[$nick]");
+            ."$nfoname $checksum]--[$nick]");
         return 0;
     }
 
@@ -2058,10 +2058,10 @@ sub saveNfo {
     if (!runSqlSave($sql, @params)) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[",
                       "Unable to save nfo into db]--[!addnfo $pre $url ",
-                      "$nfoname]--[$nick]--[$channel]";
+                      "$nfoname $checksum]--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[Unable to save nfo into db]--[!addnfo $pre "
-            ."$url $nfoname]--[$nick]--[$channel]");
+            ."$url $nfoname $checksum]--[$nick]--[$channel]");
         unlink("$hash");
 
         return 0;
