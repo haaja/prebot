@@ -1877,7 +1877,7 @@ sub saveAddold {
     my @params = ($pre, $pretime, $groupId, $sectionId, $channelId, $botId);
 
     if (!runSqlSave($sql, @params)) {
-        my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveAddikd()--",
+        my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveAddold()--",
                       "[Unable to save addold into db]--[!addold $pre ",
                       "$origSection $pretime $files $size $genre $nuke]",
                       "--[$nick]";
@@ -1936,7 +1936,7 @@ sub saveNfo {
 
     if (length($checksum) != 8) {
         my $message = "[".$red."ERROR".$reset."] ".$darkgrey."saveNfo()--[CRC ",
-                      "length is not 8 chars]--[!addnfo $pre $url $nfoname "
+                      "length is not 8 chars]--[!addnfo $pre $url $nfoname ",
                       "$checksum]--[$nick]--[$channel]";
         announceError($server, $message);
         printDebug("saveNfo()--[CRC length != 8]--[!addnfo $pre $url "
