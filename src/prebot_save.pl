@@ -159,8 +159,8 @@ our %limits = (
     nukereasonLength	=> '250',
     sectionLength	=> '20',
     nukenetLength	=> '30',
-    nfoHashLeng		=> '32',
-    nfonameLgth		=> '100',
+    nfoHashLength	=> '32',
+    nfonameLength	=> '100',
 );
 
 our $blockednfo = "imdb.nfo|autotrader.nfo|scc.nfo|hqscene.nfo|unknown.nfo";
