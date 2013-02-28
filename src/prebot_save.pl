@@ -1967,7 +1967,7 @@ sub saveNfo {
 
     my $botId = checkBot($nick, "nfo");
     if (!$botId) {
-        printDebug("saveNfo()--[Bot $bot does not have nfo saving rights]--["
+        printDebug("saveNfo()--[Bot $nick does not have nfo saving rights]--["
             ."!addnfo $pre $url $nfoname $checksum]--[$nick]--[$channel]");
         return 0;
     }
